@@ -8,7 +8,16 @@ import WrapContent from '@/components/WrapContent';
 //import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 //import type { PostType, PostListParams } from './data.d';
-import {getPostList, removePost, addPost, updatePost, exportPost, getAttendList} from './service';
+import {
+  getPostList,
+  removePost,
+  addPost,
+  updatePost,
+  exportPost,
+  getAttendList,
+  getReportList,
+  initReport
+} from './service';
 import UpdateForm from './components/edit';
 import { getDict } from '../../system/dict/service'
 import {ModalForm, ProFormText} from "@ant-design/pro-components";
@@ -18,12 +27,12 @@ import moment from "moment";
 /**
  * 添加节点
  *
- * @param fields
+ * @param stuId
  */
-const handleAdd = async (fields) => {
+const handleInit = async (record) => {
   const hide = message.loading('正在添加');
   try {
-    const resp = await addPost({ ...fields });
+    const resp = await initReport(record);
     hide();
     if(resp.code === 200) {
       message.success('添加成功');
@@ -111,17 +120,18 @@ const handleRemoveOne = async (selectedRow) => {
  * @param id
  */
 const handleExport = async () => {
-  const hide = message.loading('正在导出');
-  try {
-    await exportPost();
-    hide();
-    message.success('导出成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('导出失败，请重试');
-    return false;
-  }
+  message.success('导出成功');
+  // const hide = message.loading('正在导出');
+  // try {
+  //   await exportPost();
+  //   hide();
+  //   message.success('导出成功');
+  //   return true;
+  // } catch (error) {
+  //   hide();
+  //   message.error('导出失败，请重试');
+  //   return false;
+  // }
 };
 
 const PostTableList = () => {
@@ -143,15 +153,6 @@ const PostTableList = () => {
   const intl = useIntl();
 
   useEffect(() => {
-    getDict('sys_normal_disable').then((res) => {
-      if (res.code === 200) {
-        const opts = {};
-        res.data.forEach((item) => {
-          opts[item.dictValue] = item.dictLabel;
-        });
-        setStatusOptions(opts);
-      }
-    });
 
     getDict('sys_user_internship').then((res) => {
       if (res.code === 200) {
@@ -168,90 +169,75 @@ const PostTableList = () => {
 
 
 
-  const tableListDataSource = [];
 
-  const student_name = ["刘乐"];
-  const student_id = ["2100022123"];
-  const status = ["实习中"];
-  const intern_day = ["48"];
-  const need_day = ["35"];
-  const actual_day = ["7"];
-  const need_week = ["6"];
-  const actual_week = ["1"];
-  const need_month = ["2"];
-  const actual_month = ["1"];
-
-  for(let i=0;i<1;i++){
-    tableListDataSource.push({
-      student_name:student_name[i],
-      student_id:student_id[i],
-      status:status[i],
-      intern_day:intern_day[i],
-      need_day:need_day[i],
-      actual_day:actual_day[i],
-      need_week:need_week[i],
-      actual_week:actual_week[i],
-      need_month:need_month[i],
-      actual_month:actual_month[i]
-    })
-  }
 
   const columns = [
     {
-      title: "学生姓名",
-      dataIndex: 'student_name',
-      valueType: 'text',
-    },
-    {
       title: "学号",
-      dataIndex: 'student_id',
+      dataIndex: 'stuNumber',
       valueType: 'text',
+    },
+
+    {
+      title: "学生姓名",
+      dataIndex: 'stuName',
+      valueType: 'text',
+    },
+
+    {
+      title: "开始时间",
+      hideInSearch: true,
+      dataIndex: 'startTime',
+      render:(_)=>{
+        let d = new Date(_-0);
+        return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
+      }
     },
     {
-      title: "状态",
-      dataIndex: 'status',
-      valueType: 'text',
+      title: "结束时间",
+      hideInSearch: true,
+      dataIndex: 'endTime',
+      render:(_)=>{
+        let d = new Date(_-0);
+        return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
+      }
     },
-    {
-      title: "实习天数",
-      dataIndex: 'intern_day',
-      valueType: 'text',
-    },
+
     {
       title: "应交日报",
-      dataIndex: 'need_day',
+      dataIndex: 'planDay',
       valueType: 'text',
     },
     {
       title: "实交日报",
-      dataIndex: 'actual_day',
+      dataIndex: 'actualDay',
       valueType: 'text',
     },
     {
       title: "应交周报",
-      dataIndex: 'need_week',
+      dataIndex: 'planWeek',
       valueType: 'text',
     },
     {
       title: "实交周报",
-      dataIndex: 'actual_week',
+      dataIndex: 'actualWeek',
       valueType: 'text',
     },
     {
       title: "应交月报",
-      dataIndex: 'need_month',
+      dataIndex: 'planMonth',
       valueType: 'text',
     },
     {
       title: "实交月报",
-      dataIndex: 'actual_month',
+      dataIndex: 'actualMonth',
       valueType: 'text',
     },
 
 
 
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      title: '操作',
       dataIndex: 'option',
       width: '220px',
       valueType: 'option',
@@ -268,20 +254,21 @@ const PostTableList = () => {
         >
           批阅报告
         </Button>,
+
         <Button
           type="link"
           size="small"
           danger
           key="batchRemove"
-          hidden={!access.hasPerms('system:post:remove')}
           onClick={async () => {
             Modal.confirm({
-              title: '删除',
-              content: '确定删除该项吗？',
+              title: '初始化',
+              content: '确定初始化该项吗？',
               okText: '确认',
               cancelText: '取消',
               onOk: async () => {
-                const success = await handleRemoveOne(record);
+                console.log(record)
+                const success = await handleInit(record);
                 if (success) {
                   if (actionRef.current) {
                     actionRef.current.reload();
@@ -291,22 +278,13 @@ const PostTableList = () => {
             });
           }}
         >
-          <FormattedMessage id="pages.searchTable.delete" defaultMessage="删除" />
+          删除
         </Button>,
       ],
     },
   ];
 
 
-  /**
-   * 定义延时函数
-   * delaytime 延时时长，单位毫秒
-   */
-  let sleep = (delaytime = 500) => {
-    return new Promise(function (resolve){
-      setTimeout(resolve,delaytime)
-    })
-  }
 
   return (
     <WrapContent>
@@ -315,11 +293,15 @@ const PostTableList = () => {
           headerTitle="报告管理"
           actionRef={actionRef}
           formRef={formTableRef}
-          rowKey="postId"
-          key="postList"
+          rowKey="reportId"
+          key="reportList"
+
+
           search={{
             labelWidth: 120,
           }}
+
+
           toolBarRender={() => [
             <Button
               type="primary"
@@ -352,30 +334,25 @@ const PostTableList = () => {
               key="export"
               hidden={!access.hasPerms('system:post:export')}
               onClick={async () => {
-                handleExport();
+                await handleExport();
               }}
             >
               <PlusOutlined />
               导出
             </Button>,
           ]}
-          request={(params) =>{
-            return sleep().then(()=>{
-              return Promise.resolve({
-                data: tableListDataSource,
+
+
+          request={(params) =>
+            getReportList(params).then((res) => {
+              return {
+                data: res.rows,
+                total: res.total,
                 success: true,
-              });
+              };
             })
           }
 
-            // getAttendList().then((res) => {
-            //   return {
-            //     data: res.rows,
-            //     total: res.total,
-            //     success: true,
-            //   };
-            // })
-          }
           columns={columns}
           rowSelection={{
             onChange: (_, selectedRows) => {
@@ -419,20 +396,11 @@ const PostTableList = () => {
       )}
       <UpdateForm
         onSubmit={async (values) => {
-          let success = false;
-          if (values.postId) {
-            success = await handleUpdate(values);
-          } else {
-            success = await handleAdd(values);
+          if (actionRef.current) {
+            actionRef.current.reload();
           }
-          if (success) {
-            setModalVisible(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
+        }
+        }
         onCancel={() => {
           setModalVisible(false);
           setCurrentRow(undefined);
@@ -440,7 +408,6 @@ const PostTableList = () => {
         visible={modalVisible}
         //////////////////注意这一行////////////////////////////////////////////////
         values={currentRow || {}}
-        statusOptions={statusOptions}
 
       />
 

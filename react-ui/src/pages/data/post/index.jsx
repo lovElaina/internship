@@ -8,9 +8,11 @@ import WrapContent from '@/components/WrapContent';
 //import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 //import type { PostType, PostListParams } from './data.d';
-import { getPostList, removePost, addPost, updatePost, exportPost } from './service';
+import {getPostList, removePost, addPost, updatePost, queryCurrentUserInfo, getCompanyByUserId} from './service';
 import UpdateForm from './components/edit';
 import { getDict } from '../../system/dict/service'
+import {getUserInfo} from "@/services/session";
+import {useRequest} from "@@/plugin-request/request";
 
 
 /**
@@ -109,18 +111,21 @@ const handleRemoveOne = async (selectedRow) => {
  * @param id
  */
 const handleExport = async () => {
-  const hide = message.loading('正在导出');
-  try {
-    await exportPost();
-    hide();
-    message.success('导出成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('导出失败，请重试');
-    return false;
-  }
+  message.success('正在开发中');
+  // const hide = message.loading('正在导出');
+  // try {
+  //   await exportPost();
+  //   hide();
+  //   message.success('导出成功');
+  //   return true;
+  // } catch (error) {
+  //   hide();
+  //   message.error('导出失败，请重试');
+  //   return false;
+  // }
 };
+
+
 
 const PostTableList = () => {
   const formTableRef = useRef();
@@ -131,76 +136,94 @@ const PostTableList = () => {
   const [currentRow, setCurrentRow] = useState();
   const [selectedRowsState, setSelectedRows] = useState([]);
 
-  const [statusOptions, setStatusOptions] = useState([]);
+  const [isQueryMode, setIsQueryMode] = useState(false);
 
+  //得到当前用户的companyID
+  const [currentUserInfo, setCurrentUserInfo] = useState();
   const access = useAccess();
 
+  const {data: userInfo,loading} = useRequest(()=>{
+    return queryCurrentUserInfo();
+  })
+  if(loading){
+    console.log("loading...")
+  }
+
+  const currentUser = userInfo;
   /** 国际化配置 */
   const intl = useIntl();
 
-  useEffect(() => {
-    getDict('sys_normal_disable').then((res) => {
-      if (res.code === 200) {
-        const opts = {};
-        res.data.forEach((item) => {
-          opts[item.dictValue] = item.dictLabel;
-        });
-        setStatusOptions(opts);
-      }
-    });
-  }, []);
+  useEffect(()=>{
+    if(currentUser?.user.userId!==undefined){
+      getCompanyByUserId(currentUser?.user.userId).then(res =>{
+        setCurrentUserInfo(res)
+      } )
+    }
+
+    // getUserInfo().then(res=>{
+    //   // if(res.user.roleId === 5){
+    //   //     getCompany(res.user.userId).then(res=>{
+    //   //       console.log(res)
+    //   //     })
+    //   // }else console.log("not company")
+    //
+    //   setCurrentUser(res.user)
+    //   console.log("//////////////////////////////")
+    //   console.log(res.user)
+    // })
+  },[currentUser])
 
   const columns = [
     {
       title: "岗位名称",
       dataIndex: 'postName',
       valueType: 'text',
+      width: '150px',
     },
     {
       title: "公司名称",
-      dataIndex: 'companyName',
+      dataIndex: ['extra','companyname'],
       valueType: 'text',
+      width: '160px',
     },
     {
       title: "部门名称",
-      dataIndex: 'depName',
+      dataIndex: ['extra','departmentname'],
       valueType: 'text',
-    },
-    {
-      title: "联系电话",
-      dataIndex: 'phonenumber',
-      valueType: 'text',
-    },
-    {
-      title: "状态",
-      dataIndex: 'status',
-      valueType: 'select',
-      valueEnum: statusOptions,
+      width: '150px',
     },
     {
       title: "薪酬",
-      dataIndex: 'salary',
+      dataIndex: 'postSalary',
       valueType: 'text',
+      width: '120px',
     },
     {
-      title: "工作时间",
+      title: "工作日期",
       dataIndex: 'workTime',
       valueType: 'text',
+      width: '120px',
     },
     {
-      title: "岗位要求",
-      dataIndex: 'requirement',
+      title: "上下班时间",
+      dataIndex: 'attendTime',
       valueType: 'text',
-      width: '300px',
+      width: '150px',
     },
     {
-      title: <FormattedMessage id="system.Post.remark" defaultMessage="备注" />,
-      dataIndex: 'remark',
+      title: "专业要求",
+      dataIndex: 'postMajor',
+      valueType: 'text',
+      width: '150px',
+    },
+    {
+      title: "其他要求",
+      dataIndex: 'postRequirement',
       valueType: 'textarea',
       hideInSearch: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      title: "操作",
       dataIndex: 'option',
       width: '220px',
       valueType: 'option',
@@ -209,13 +232,28 @@ const PostTableList = () => {
           type="link"
           size="small"
           key="edit"
-          hidden={!access.hasPerms('system:post:edit')}
+          hidden={!access.hasPerms('system:post:query')}
+          onClick={() => {
+            setIsQueryMode(true);
+            setModalVisible(true);
+            setCurrentRow(record);
+          }}
+        >
+          查看详情
+        </Button>,
+
+
+        <Button
+          type="link"
+          size="small"
+          key="edit"
+          hidden={!access.hasPerms('system:post:edit')||currentUserInfo?.data === null}
           onClick={() => {
             setModalVisible(true);
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.searchTable.edit" defaultMessage="编辑" />
+          编辑
         </Button>,
         <Button
           type="link"
@@ -240,7 +278,7 @@ const PostTableList = () => {
             });
           }}
         >
-          <FormattedMessage id="pages.searchTable.delete" defaultMessage="删除" />
+          删除
         </Button>,
       ],
     },
@@ -259,10 +297,11 @@ const PostTableList = () => {
             labelWidth: 120,
           }}
           toolBarRender={() => [
+            ////////////////////////////////////////////////////////////////////////////////////
             <Button
               type="primary"
               key="add"
-              hidden={!access.hasPerms('system:post:add')}
+              hidden={!access.hasPerms('system:post:add')||currentUserInfo?.data === null}
               onClick={async () => {
                 setCurrentRow(undefined);
                 setModalVisible(true);
@@ -296,6 +335,7 @@ const PostTableList = () => {
               <PlusOutlined />
               导出
             </Button>,
+            ///////////////////////////////////////////////////////////////////////////////////////////
           ]}
           request={(params) =>
             getPostList(params).then((res) => {
@@ -350,27 +390,44 @@ const PostTableList = () => {
       <UpdateForm
         onSubmit={async (values) => {
           let success = false;
-          if (values.postId) {
-            success = await handleUpdate(values);
-          } else {
-            success = await handleAdd(values);
-          }
-          if (success) {
+          //表示此用户为企业
+
+          if(isQueryMode){
             setModalVisible(false);
             setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
+          }else{
+            if(currentUserInfo.data !== null){
+              values.companyId = currentUserInfo.data.user;
+
+              if (values.postId) {
+                success = await handleUpdate(values);
+              } else {
+                success = await handleAdd(values);
+              }
+              if (success) {
+                setModalVisible(false);
+                setCurrentRow(undefined);
+                if (actionRef.current) {
+                  actionRef.current.reload();
+                }
+              }
+            }else{
+              setModalVisible(false);
+              setCurrentRow(undefined);
+              message.error("只有企业可以添加用户")
             }
           }
+
+
         }}
         onCancel={() => {
+          setIsQueryMode(false);
           setModalVisible(false);
           setCurrentRow(undefined);
         }}
         visible={modalVisible}
-        //////////////////注意这一行////////////////////////////////////////////////
         values={currentRow || {}}
-        statusOptions={statusOptions}
+        isQueryMode={isQueryMode}
       />
     </WrapContent>
   );

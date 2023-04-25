@@ -3,11 +3,11 @@ import request from '@/utils/request';
 //import type { PostType, PostListParams } from './data.d';
 
 
-// 查询岗位信息列表
+// 查询报告概略列表
 // @ts-ignore
-export async function getAttendList () {
-  //const queryString = new URLSearchParams(params).toString();
-  return request(`/system/attend/list`, {
+export async function getReportList (params) {
+  const queryString = new URLSearchParams(params).toString();
+  return request(`/system/report/list?${queryString}`, {
     //data: params,
     method: 'GET',
     headers: {
@@ -15,6 +15,44 @@ export async function getAttendList () {
     }
   });
 }
+
+// 查询个人报告记录列表
+// @ts-ignore
+export async function getReportLogListByStuId (params,stuId) {
+  const queryString = new URLSearchParams(params).toString();
+  return request(`/system/report/${stuId}?${queryString}`, {
+    //data: params,
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    }
+  });
+}
+
+// 初始化报告信息
+// @ts-ignore
+export async function initReport (params) {
+  return request('/system/report', {
+    method: 'POST',
+    data: params
+  });
+}
+
+
+// 修改报告评价信息
+// @ts-ignore
+export async function updateReportMark (params) {
+  return request('/system/report', {
+    method: 'PUT',
+    data: params,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    }
+  });
+}
+
+
+
 
 // 查询岗位信息详细
 // @ts-ignore
@@ -24,23 +62,7 @@ export function getPost (postId) {
   });
 }
 
-// 新增岗位信息
-// @ts-ignore
-export async function addPost (params) {
-  return request('/system/post', {
-    method: 'POST',
-    data: params
-  });
-}
 
-// 修改岗位信息
-// @ts-ignore
-export async function updatePost (params) {
-  return request('/system/post', {
-    method: 'PUT',
-    data: params
-  });
-}
 
 // 删除岗位信息
 // @ts-ignore

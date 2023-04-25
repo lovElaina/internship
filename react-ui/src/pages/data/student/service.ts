@@ -5,10 +5,10 @@ import type { DataNode } from 'antd/lib/tree';
 import type { UserType, UserListParams } from './data';
 
 
-// 查询用户信息列表
-export async function getUserList(params?: UserListParams) {
+// 查询学生信息列表
+export async function getStudentListByDeptId(params?: UserListParams) {
   const queryString = new URLSearchParams(params).toString();
-  return request(`/system/user/studentlist?${queryString}`, {
+  return request(`/system/student/list?${queryString}`, {
     data: params,
     method: 'GET',
     headers: {
@@ -19,7 +19,8 @@ export async function getUserList(params?: UserListParams) {
 
 // 查询导师信息列表
 export async function getTutorList() {
-  return request(`/system/user/tutorlist`, {
+  const queryString = 'current=1&pageSize=100'
+  return request(`/system/tutor/list?${queryString}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
@@ -30,31 +31,40 @@ export async function getTutorList() {
 
 
 // 查询用户信息详细
-export function getUser(userId: number) {
-  return request(`/system/user/${userId}`, {
+export function getStudentByStuId(stuId: number) {
+  return request(`/system/student/${stuId}`, {
     method: 'GET',
   });
 }
 
-// 新增用户信息
+// 查询用户列表中所选的所有岗位信息
+export function getPostList(){
+  return request('/system/post/list',{
+    method: 'GET'
+  })
+}
+
+
+
+// 新增学生信息
 export async function addUser(params: UserType) {
-  return request('/system/user', {
+  return request('/system/student', {
     method: 'POST',
     data: params,
   });
 }
 
-// 修改用户信息
+// 修改学生信息
 export async function updateUser(params: UserType) {
-  return request('/system/user', {
+  return request('/system/student', {
     method: 'PUT',
     data: params,
   });
 }
 
-// 删除用户信息
-export async function removeUser(ids: string) {
-  return request(`/system/user/${ids}`, {
+// 删除学生信息
+export async function removeUser(ids: number) {
+  return request(`/system/student/${ids}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',

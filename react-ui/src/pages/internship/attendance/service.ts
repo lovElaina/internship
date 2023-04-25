@@ -3,11 +3,20 @@ import request from '@/utils/request';
 //import type { PostType, PostListParams } from './data.d';
 
 
-// 查询出勤信息列表
+// 初始化报告信息
 // @ts-ignore
-export async function getAttendList () {
-  //const queryString = new URLSearchParams(params).toString();
-  return request(`/system/attend/list`, {
+export async function initAttend (params) {
+  return request('/system/attend', {
+    method: 'POST',
+    data: params
+  });
+}
+
+// 查询个人出勤记录列表
+// @ts-ignore
+export async function getAttendLogListByStuId (params,stuId) {
+  const queryString = new URLSearchParams(params).toString();
+  return request(`/system/attend/${stuId}?${queryString}`, {
     //data: params,
     method: 'GET',
     headers: {
@@ -16,18 +25,27 @@ export async function getAttendList () {
   });
 }
 
-// 查询出勤信息详细
+
+
+// 查询出勤信息列表
 // @ts-ignore
-export function getPost (postId) {
-  return request(`/system/post/${postId}`, {
-    method: 'GET'
+export async function getAttendList (params) {
+  const queryString = new URLSearchParams(params).toString();
+  return request(`/system/attend/list?${queryString}`, {
+    //data: params,
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    }
   });
 }
+
+
 
 // 新增出勤信息
 // @ts-ignore
 export async function addPost (params) {
-  return request('/system/post', {
+  return request('/system/attend', {
     method: 'POST',
     data: params
   });
@@ -35,26 +53,17 @@ export async function addPost (params) {
 
 // 修改出勤信息
 // @ts-ignore
-export async function updatePost (params) {
-  return request('/system/post', {
+export async function updateAttendLog (params) {
+  return request('/system/attend/update', {
     method: 'PUT',
     data: params
   });
 }
 
-// 删除出勤信息
-// @ts-ignore
-export async function removePost (ids) {
-  return request(`/system/post/${ids}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-    }
-  });
-}
+
 
 // 导出出勤信息
 // @ts-ignore
 export function exportPost (params) {
-  return downLoadXlsx(`/system/post/export`, { params }, `post_${new Date().getTime()}.xlsx`);
+  return downLoadXlsx(`/system/attend/export`, { params }, `post_${new Date().getTime()}.xlsx`);
 }

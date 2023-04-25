@@ -145,29 +145,29 @@ public interface ISysRoleService
      */
     public int deleteRoleByIds(Long[] roleIds);
 
-    /**
-     * 取消授权用户角色
-     * 
-     * @param userRole 用户和角色关联信息
-     * @return 结果
-     */
-    public int deleteAuthUser(SysUserRole userRole);
-
-    /**
-     * 批量取消授权用户角色
-     * 
-     * @param roleId 角色ID
-     * @param userIds 需要取消授权的用户数据ID
-     * @return 结果
-     */
-    public int deleteAuthUsers(Long roleId, Long[] userIds);
-
-    /**
-     * 批量选择授权用户角色
-     * 
-     * @param roleId 角色ID
-     * @param userIds 需要删除的用户数据ID
-     * @return 结果
-     */
-    public int insertAuthUsers(Long roleId, Long[] userIds);
+//    /**
+//     * 取消授权用户角色
+//     *
+//     * @param userRole 用户和角色关联信息
+//     * @return 结果
+//     */
+//    public int deleteAuthUser(SysUserRole userRole);
+//
+//    /**
+//     * 批量取消授权用户角色
+//     *
+//     * @param roleId 角色ID
+//     * @param userIds 需要取消授权的用户数据ID
+//     * @return 结果
+//     */
+//    public int deleteAuthUsers(Long roleId, Long[] userIds);
+//
+//    /**
+//     * 批量选择授权用户角色
+//     *
+//     * @param roleId 角色ID
+//     * @param userIds 需要删除的用户数据ID
+//     * @return 结果
+//     */
+//    public int insertAuthUsers(Long roleId, Long[] userIds);
 }

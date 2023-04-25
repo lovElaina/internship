@@ -134,6 +134,17 @@ public class BaseController
     }
 
     /**
+     * 响应返回结果2
+     *
+     * @param rows 影响行数
+     * @return 操作结果
+     */
+    protected AjaxResult toAjaxEx(int rows)
+    {
+        return rows > 1 ? AjaxResult.success() : AjaxResult.error();
+    }
+
+    /**
      * 响应返回结果
      * 
      * @param result 结果

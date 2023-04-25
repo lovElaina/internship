@@ -1,4 +1,3 @@
-import { downLoadXlsx } from '@/utils/downloadfile';
 import request from '@/utils/request';
 //import type { PostType, PostListParams } from './data.d';
 
@@ -53,8 +52,25 @@ export async function removePost (ids) {
   });
 }
 
-// 导出岗位信息
-// @ts-ignore
-export function exportPost (params) {
-  return downLoadXlsx(`/system/post/export`, { params }, `post_${new Date().getTime()}.xlsx`);
+export async function queryCurrentUserInfo(): Promise<{ data: API.GetUserInfoResult }> {
+  return { data: await request('/getInfo') }
 }
+
+export function getCurrentUserInfo(){
+  return request('/getInfo',{
+    method: 'GET'
+  })
+}
+
+// 查询企业信息详细
+export function getCompanyByUserId(userId) {
+  return request(`/system/company/current/${userId}`, {
+    method: 'GET',
+  });
+}
+
+// // 导出岗位信息
+// // @ts-ignore
+// export function exportPost (params) {
+//   return downLoadXlsx(`/system/post/export`, { params }, `post_${new Date().getTime()}.xlsx`);
+// }

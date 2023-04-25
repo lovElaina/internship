@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ScoreMapper">
+
+    <resultMap type="Score" id="ScoreResult">
+        <id     property="scoreId"       column="score_id"      />
+        <result property="stuId"	column="stu_id"   />
+        <result property="attendScore"       column="attend_score"      />
+        <result property="reportTutorScore"     column="report_tutor_score"    />
+        <result property="reportCompanyScore"     column="report_company_score"    />
+        <result property="actionCompanyScore"        column="action_company_score"        />
+        <result property="totalScore"        column="total_score"        />
+        <result property="tutorComplete"        column="tutor_complete"        />
+        <result property="companyComplete"        column="company_complete"        />
+        <result property="delFlag"          column="del_flag"     />
+    </resultMap>
+
+    <select id="selectScoreList" parameterType="Score" resultMap="ScoreResult">
+        select * from score where del_flag = '0'
+    </select>
+
+
+    <select id="selectScoreByStuId" parameterType="Long" resultMap="ScoreResult">
+        select * from score where stu_id = #{stuId} and del_flag = '0'
+    </select>
+
+
+
+
+    <insert id="insertScore" parameterType="Score" useGeneratedKeys="true" keyProperty="scoreId">
+        insert into score(
+        <if test="scoreId != null and scoreId != 0">score_id,</if>
+        <if test="stuId != null and stuId != 0">stu_id,</if>
+        <if test="attendScore != null and attendScore != 0">attend_score,</if>
+        <if test="reportTutorScore != null and reportTutorScore != 0">report_tutor_score,</if>
+        <if test="reportCompanyScore != null and reportCompanyScore != 0">report_company_score,</if>
+        <if test="actionCompanyScore != null and actionCompanyScore != 0">action_company_score,</if>
+        <if test="totalScore != null and totalScore != 0">total_score,</if>
+        tutor_complete,
+        company_complete,
+        del_flag
+        )values(
+        <if test="scoreId != null and scoreId != 0">#{scoreId},</if>
+        <if test="stuId != null and stuId != 0">#{stuId},</if>
+        <if test="attendScore != null and attendScore != 0">#{attendScore},</if>
+        <if test="reportTutorScore != null and reportTutorScore != 0">#{reportTutorScore},</if>
+        <if test="reportCompanyScore != null and reportCompanyScore != 0">#{reportCompanyScore},</if>
+        <if test="actionCompanyScore != null and actionCompanyScore != 0">#{actionCompanyScore},</if>
+        <if test="totalScore != null and totalScore != 0">#{totalScore},</if>
+        '0',
+        '0',
+        '0'
+        )
+    </insert>
+
+    <update id="updateScore" parameterType="Score">
+        update score
+        <set>
+            <if test="scoreId != null and scoreId != 0">score_id = #{scoreId},</if>
+            <if test="stuId != null and stuId != 0">stu_id = #{stuId},</if>
+            <if test="attendScore != null and attendScore != 0">attend_score = #{attendScore},</if>
+            <if test="reportTutorScore != null and reportTutorScore != 0">report_tutor_score = #{reportTutorScore},</if>
+            <if test="reportCompanyScore != null and reportCompanyScore != 0">report_company_score = #{reportCompanyScore},</if>
+            <if test="actionCompanyScore != null and actionCompanyScore != 0">action_company_score = #{actionCompanyScore},</if>
+            <if test="totalScore != null and totalScore != 0">total_score = #{totalScore},</if>
+            <if test="tutorComplete != null and tutorComplete != ''">tutor_complete = #{tutorComplete},</if>
+            <if test="companyComplete != null and companyComplete != ''">company_complete = #{companyComplete},</if>
+        </set>
+        where stu_id = #{stuId}
+    </update>
+
+    <delete id="deleteScoreById" parameterType="Long">
+        update score set del_flag = '2' where score_id = #{scoreId}
+    </delete>
+
+
+
+
+</mapper>

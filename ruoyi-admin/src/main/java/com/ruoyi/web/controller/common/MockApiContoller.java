@@ -169,7 +169,7 @@ public class MockApiContoller {
         item.put("title", "Alipay");
         item.put("description", "那是一种内在的东西，他们到达不了，也无法触及的");
         item.put("updatedAt", DateUtils.getTime());
-        item.put("member", "科学搬砖组");
+        item.put("member", "前端小组");
         item.put("href", "");
         item.put("memberLink", "");
         info.add(item);
@@ -180,7 +180,7 @@ public class MockApiContoller {
         item.put("title", "Angular");
         item.put("description", "希望是一个好东西，也许是最好的，好东西是不会消亡的");
         item.put("updatedAt", DateUtils.getTime());
-        item.put("member", "全组都是吴彦祖");
+        item.put("member", "后端小组");
         item.put("href", "");
         item.put("memberLink", "");
         info.add(item);
@@ -191,43 +191,43 @@ public class MockApiContoller {
         item.put("title", "Ant Design");
         item.put("description", "城镇中有那么多的酒馆，她却偏偏走进了我的酒馆");
         item.put("updatedAt", DateUtils.getTime());
-        item.put("member", "中二少女团");
+        item.put("member", "测试小组");
         item.put("href", "");
         item.put("memberLink", "");
         info.add(item);
 
-        item = new JSONObject();
-        item.put("id", "xxx4");
-        item.put("logo", avatars[3]);
-        item.put("title", "Bootstrap");
-        item.put("description", "那时候我只会想自己想要什么，从不想自己拥有什么");
-        item.put("updatedAt", DateUtils.getTime());
-        item.put("member", "程序员日常");
-        item.put("href", "");
-        item.put("memberLink", "");
-        info.add(item);
-
-        item = new JSONObject();
-        item.put("id", "xxx5");
-        item.put("logo", avatars[4]);
-        item.put("title", "React");
-        item.put("description", "凛冬将至");
-        item.put("updatedAt", DateUtils.getTime());
-        item.put("member", "高逼格设计天团");
-        item.put("href", "");
-        item.put("memberLink", "");
-        info.add(item);
-
-        item = new JSONObject();
-        item.put("id", "xxx6");
-        item.put("logo", avatars[5]);
-        item.put("title", "Webpack");
-        item.put("description", "生命就像一盒巧克力，结果往往出人意料");
-        item.put("updatedAt", DateUtils.getTime());
-        item.put("member", "程序员日常");
-        item.put("href", "");
-        item.put("memberLink", "");
-        info.add(item);
+//        item = new JSONObject();
+//        item.put("id", "xxx4");
+//        item.put("logo", avatars[3]);
+//        item.put("title", "Bootstrap");
+//        item.put("description", "那时候我只会想自己想要什么，从不想自己拥有什么");
+//        item.put("updatedAt", DateUtils.getTime());
+//        item.put("member", "程序员日常");
+//        item.put("href", "");
+//        item.put("memberLink", "");
+//        info.add(item);
+//
+//        item = new JSONObject();
+//        item.put("id", "xxx5");
+//        item.put("logo", avatars[4]);
+//        item.put("title", "React");
+//        item.put("description", "凛冬将至");
+//        item.put("updatedAt", DateUtils.getTime());
+//        item.put("member", "高逼格设计天团");
+//        item.put("href", "");
+//        item.put("memberLink", "");
+//        info.add(item);
+//
+//        item = new JSONObject();
+//        item.put("id", "xxx6");
+//        item.put("logo", avatars[5]);
+//        item.put("title", "Webpack");
+//        item.put("description", "生命就像一盒巧克力，结果往往出人意料");
+//        item.put("updatedAt", DateUtils.getTime());
+//        item.put("member", "程序员日常");
+//        item.put("href", "");
+//        item.put("memberLink", "");
+//        info.add(item);
 
         AjaxResult ajax = AjaxResult.success();
         ajax.put("data", info);
@@ -490,11 +490,11 @@ public class MockApiContoller {
             radarTypes.add("部门");
 
             Map<String, String> radarTitleMap = new HashMap<>();
-            radarTitleMap.put("ref", "引用");
-            radarTitleMap.put("koubei", "口碑");
-            radarTitleMap.put("output", "产量");
-            radarTitleMap.put("contribute", "贡献");
-            radarTitleMap.put("hot", "热度");
+            radarTitleMap.put("ref", "考勤");
+            radarTitleMap.put("koubei", "日报");
+            radarTitleMap.put("output", "周报");
+            radarTitleMap.put("contribute", "月报");
+            radarTitleMap.put("hot", "评价");
 
             for (String radarType : radarTypes) {
                 for (Entry<String, String> key : radarTitleMap.entrySet()) {

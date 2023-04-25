@@ -1,7 +1,11 @@
 export type UserType = {
+  stuId: number;
   userId: number;
-  studentId: string;
+  postId:number;
   deptId: number;
+  stuNumber:number;
+  stuName:string;
+  stuGender:string;
   // deptName: string;
   // dept: any;
   userName: string;
@@ -32,7 +36,19 @@ export type UserType = {
   tutorId:string;
   startTime:number;
   endTime:number;
+
+  extra:any;
 };
+
+// export type extra = {
+//   userid : number;
+//   roleid: number;
+//   deptid: number;
+//   username: string;
+//   password: string;
+//   email: string;
+//   phone: string;
+// }
 
 export type UserListPagination = {
   total: number;

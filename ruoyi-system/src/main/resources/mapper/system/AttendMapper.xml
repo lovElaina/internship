@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AttendMapper">
+
+    <resultMap type="Attend" id="AttendResult">
+        <id     property="attendId"       column="attend_id"      />
+        <result property="stuId"	column="stu_id"   />
+        <result property="attendDate"       column="attend_date"      />
+        <result property="workTime"     column="work_time"    />
+        <result property="restTime"     column="rest_time"    />
+        <result property="result"        column="result"        />
+<!--    <association property="user"    column="stu_id" javaType="Student" resultMap="StudentResult" />-->
+        <!--        这个可能有必要，需要好好研究以下-->
+        <!--        <collection  property="roles"   javaType="java.util.List"           resultMap="RoleResult" />-->
+    </resultMap>
+
+
+    <select id="countAttendByStuId" resultType="Integer">
+        select count(1) from attend where stu_id = #{stuId} and result = '0'
+    </select>
+
+    <select id="countLeaveByStuId" resultType="Integer">
+        select count(1) from attend where stu_id = #{stuId} and result = '1'
+    </select>
+
+    <select id="countLateByStuId" resultType="Integer">
+        select count(1) from attend where stu_id = #{stuId} and result = '2'
+    </select>
+
+    <select id="countAbsentByStuId" resultType="Integer">
+        select count(1) from attend where stu_id = #{stuId} and result = '3'
+    </select>
+
+
+
+    <select id="selectAttendListByStuId" parameterType="Long" resultMap="AttendResult">
+        select * from attend where stu_id = #{stuId} AND result != '4' AND attend_date &lt; unix_timestamp()*1000 order by attend_date desc
+    </select>
+
+
+
+
+    <insert id="insertAttend" parameterType="Attend" useGeneratedKeys="true" keyProperty="attendId">
+        insert into attend(
+        <if test="attendId != null and attendId != 0">attend_id,</if>
+        <if test="stuId != null and stuId != 0">stu_id,</if>
+        <if test="attendDate != null and attendDate != 0">attend_date,</if>
+        <if test="workTime != null and workTime != 0">work_time,</if>
+        <if test="restTime != null and restTime != 0">rest_time,</if>
+        result
+        )values(
+        <if test="attendId != null and attendId != 0">#{attendId},</if>
+        <if test="stuId != null and stuId != 0">#{stuId},</if>
+        <if test="attendDate != null and attendDate != 0">#{attendDate},</if>
+        <if test="workTime != null and workTime != 0">#{workTime},</if>
+        <if test="restTime != null and restTime != 0">#{restTime},</if>
+        '5'
+        )
+    </insert>
+    
+    <update id="updateAttend" parameterType="Attend">
+        update attend
+        <set>
+            <if test="attendId != null and attendId != 0">attend_id = #{attendId},</if>
+            <if test="stuId != null and stuId != 0">stu_id = #{stuId},</if>
+            <if test="attendDate != null and attendDate != 0">attend_date = #{attendDate},</if>
+            <if test="workTime != null and workTime != 0">work_time = #{workTime},</if>
+            <if test="restTime != null and restTime != 0">rest_time = #{restTime},</if>
+            <if test="result != null and result != ''">result = #{result},</if>
+        </set>
+        where stu_id = #{stuId} and attend_date = #{attendDate}
+    </update>
+
+<!--    <delete id="deleteAttendByUserId" parameterType="Long">-->
+<!--        update sys_attend set del_flag = '2' where user_id = #{userId}-->
+<!--    </delete>-->
+
+
+
+</mapper>

@@ -1,6 +1,7 @@
 package com.ruoyi.framework.web.service;
 
 import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.entity.User;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.exception.ServiceException;
@@ -130,12 +131,13 @@ public class SysLoginService
      *
      * @param userId 用户ID
      */
+    //这个就是数据库最后两行记录loginIp和loginDate的
     public void recordLoginInfo(Long userId)
     {
-        SysUser sysUser = new SysUser();
-        sysUser.setUserId(userId);
-        sysUser.setLoginIp(IpUtils.getIpAddr(ServletUtils.getRequest()));
-        sysUser.setLoginDate(DateUtils.getNowDate());
-        userService.updateUserProfile(sysUser);
+        User user = new User();
+        user.setUserId(userId);
+        user.setLoginIp(IpUtils.getIpAddr(ServletUtils.getRequest()));
+        user.setLoginDate(DateUtils.getNowDate());
+        userService.updateUserProfile(user);
     }
 }

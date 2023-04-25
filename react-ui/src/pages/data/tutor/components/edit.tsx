@@ -20,13 +20,9 @@ export type TutorFormProps = {
   visible: boolean;
   values: Partial<TutorType>;
   sexOptions: any;
-  statusOptions: any;
-  postIds: string[];
-  posts: string[];
-  roleIds: string[];
-  roles: string[];
   depts: DataNode[];
-  internshipStatusOptions:any;
+  tutorTypeOptions:any;
+  isQueryMode:boolean;
 };
 
 const TutorForm: React.FC<TutorFormProps> = (props) => {
@@ -34,35 +30,23 @@ const TutorForm: React.FC<TutorFormProps> = (props) => {
 
   const [userId, setUserId] = useState<any>('');
   const { depts } = props;
-  const { sexOptions, statusOptions, internshipStatusOptions } = props;
+  const { sexOptions, tutorTypeOptions, isQueryMode } = props;
 
   useEffect(() => {
     form.resetFields();
     setUserId(props.values.userId);
     form.setFieldsValue({
+      userName: props.values?.extra?.username,
       userId: props.values.userId,
-      studentId: props.values.studentId,
-      deptId: props.values.deptId,
-      postIds: props.postIds,
-      roleIds: props.roleIds,
-      userName: props.values.userName,
-      nickName: props.values.nickName,
-      userType: props.values.userType,
-      email: props.values.email,
-      phonenumber: props.values.phonenumber,
-      sex: props.values.sex,
-      avatar: props.values.avatar,
-      password: props.values.password,
-      status: props.values.status,
-      internshipStatus:props.values.internshipStatus,
-      delFlag: props.values.delFlag,
-      loginIp: props.values.loginIp,
-      loginDate: props.values.loginDate,
-      createBy: props.values.createBy,
-      createTime: props.values.createTime,
-      updateBy: props.values.updateBy,
-      updateTime: props.values.updateTime,
-      remark: props.values.remark,
+      tutorNumber: props.values.tutorNumber,
+      tutorName: props.values.tutorName,
+      tutorGender: props.values.tutorGender,
+      tutorType:props.values.tutorType,
+      tutorMajor:props.values.tutorMajor,
+      deptid: props.values?.extra?.deptid,
+      email: props.values?.extra?.email,
+      phone: props.values?.extra?.phone,
+
     });
   }, [form, props]);
 
@@ -92,69 +76,65 @@ const TutorForm: React.FC<TutorFormProps> = (props) => {
         <Row gutter={[16, 16]}>
 
           <Col span={12} order={1}>
-            <ProFormDigit
-              name="studentId"
+            <ProFormText
+              readonly={isQueryMode}
+              name="tutorNumber"
               label="工号"
               width="xl"
               placeholder="请输入工号"
               rules={[
                 {
                   required: true,
-                  message: <FormattedMessage id="请输入工号！" defaultMessage="请输入工号！" />,
+                  message: "请输入工号！",
                 },
               ]}
             />
           </Col>
 
           <Col span={12} order={2}>
-            <ProFormSelect
-              name="internshipStatus"
-              mode="single"
-              valueEnum={internshipStatusOptions}
-              width="xl"
-              label="类型"
-              placeholder="请选择类型"
-              rules={[{ required: true, message: '请选择类型' }]}
-            />
-          </Col>
-
-
-        </Row>
-        <Row gutter={[16, 16]}>
-          <Col span={12} order={1}>
             <ProFormText
-              name="nickName"
-              label={intl.formatMessage({
-                id: 'system.User.nick_name',
-                defaultMessage: '姓名',
-              })}
+              readonly={isQueryMode}
+              name="tutorName"
+              label='姓名'
               width="xl"
               placeholder="请输入姓名"
               rules={[
                 {
                   required: true,
-                  message: (
-                    <FormattedMessage id="请输入姓名" defaultMessage="请输入姓名" />
-                  ),
+                  message: "请输入姓名",
                 },
               ]}
             />
           </Col>
-          <Col span={12} order={2}>
-            <ProFormTreeSelect
-              name="deptId"
-              label="院系"
-              request={async () => {
-                return depts;
-              }}
+
+
+        </Row>
+        <Row gutter={[16, 16]}>
+          <Col span={12} order={1}>
+            <ProFormSelect
+              readonly={isQueryMode}
+              name="tutorType"
+              mode="single"
+              valueEnum={tutorTypeOptions}
               width="xl"
-              placeholder="请输入院系"
+              label="职称"
+              placeholder="请选择导师职称"
+              rules={[{ required: true, message: '请选择导师职称' }]}
+            />
+          </Col>
+
+          <Col span={12} order={2}>
+            <ProFormSelect
+              readonly={isQueryMode}
+              valueEnum={sexOptions}
+              name="tutorGender"
+              label='性别'
+              width="xl"
+              placeholder="请选择导师性别"
               rules={[
                 {
                   required: true,
-                  message: (
-                    <FormattedMessage id="请输入院系" defaultMessage="请输入院系" />
-                  ),
+                  message: "请输入用户性别！",
                 },
               ]}
             />
@@ -163,38 +143,30 @@ const TutorForm: React.FC<TutorFormProps> = (props) => {
         <Row gutter={[16, 16]}>
           <Col span={12} order={1}>
             <ProFormText
-              name="phonenumber"
-              label={intl.formatMessage({
-                id: 'system.User.phonenumber',
-                defaultMessage: '手机号码',
-              })}
+              readonly={isQueryMode}
+              name="phone"
+              label='手机号码'
               width="xl"
               placeholder="请输入手机号码"
               rules={[
                 {
-                  required: false,
-                  message: (
-                    <FormattedMessage id="请输入手机号码！" defaultMessage="请输入手机号码！" />
-                  ),
+                  required: true,
+                  message: "请输入手机号码！",
                 },
               ]}
             />
           </Col>
           <Col span={12} order={2}>
             <ProFormText
+              readonly={isQueryMode}
               name="email"
-              label={intl.formatMessage({
-                id: 'system.User.email',
-                defaultMessage: '用户邮箱',
-              })}
+              label='用户邮箱'
               width="xl"
               placeholder="请输入用户邮箱"
               rules={[
                 {
-                  required: false,
-                  message: (
-                    <FormattedMessage id="请输入用户邮箱！" defaultMessage="请输入用户邮箱！" />
-                  ),
+                  required: true,
+                  message: "请输入用户邮箱！",
                 },
               ]}
             />
@@ -204,19 +176,14 @@ const TutorForm: React.FC<TutorFormProps> = (props) => {
           <Col span={12} order={1}>
             <ProFormText
               name="userName"
-              label={intl.formatMessage({
-                id: 'system.User.user_name',
-                defaultMessage: '用户账号',
-              })}
+              label='用户账号'
               width="xl"
               hidden={userId}
               placeholder="请输入用户账号"
               rules={[
                 {
-                  required: true,
-                  message: (
-                    <FormattedMessage id="请输入用户账号！" defaultMessage="请输入用户账号！" />
-                  ),
+                  required: !userId,
+                  message: "请输入用户账号！",
                 },
               ]}
             />
@@ -224,85 +191,43 @@ const TutorForm: React.FC<TutorFormProps> = (props) => {
           <Col span={12} order={2}>
             <ProFormText
               name="password"
-              label={intl.formatMessage({
-                id: 'system.User.password',
-                defaultMessage: '密码',
-              })}
+              label='密码'
               width="xl"
               hidden={userId}
               placeholder="请输入密码"
               rules={[
                 {
-                  required: false,
-                  message: <FormattedMessage id="请输入密码！" defaultMessage="请输入密码！" />,
+                  required: !userId,
+                  message: "请输入密码！",
                 },
               ]}
             />
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
-          <Col span={12} order={1}>
-            <ProFormSelect
-              valueEnum={sexOptions}
-              name="sex"
-              label={intl.formatMessage({
-                id: 'system.User.sex',
-                defaultMessage: '性别',
-              })}
+          <Col span={24} order={1}>
+            <ProFormTreeSelect
+              //readonly={isQueryMode}
+              disabled={isQueryMode}
+              name="deptid"
+              label="院系"
+              request={async () => {
+                return depts;
+              }}
               width="xl"
-              placeholder="请输入用户性别"
+              placeholder="请输入院系"
               rules={[
                 {
-                  required: false,
-                  message: (
-                    <FormattedMessage id="请输入用户性别！" defaultMessage="请输入用户性别！" />
-                  ),
+                  required: true,
+                  message: "请输入院系",
                 },
               ]}
             />
+
           </Col>
-          <Col span={12} order={2}>
-            <ProFormSelect
-              valueEnum={statusOptions}
-              name="status"
-              label={intl.formatMessage({
-                id: 'system.User.status',
-                defaultMessage: '账号状态',
-              })}
-              width="xl"
-              placeholder="请输入账号状态"
-              rules={[
-                {
-                  required: false,
-                  message: (
-                    <FormattedMessage id="请输入账号状态！" defaultMessage="请输入账号状态！" />
-                  ),
-                },
-              ]}
-            />
-          </Col>
+
         </Row>
-        {/*<Row gutter={[16, 16]}>*/}
-        {/*  <Col span={24} order={1}>*/}
-        {/*    <ProFormText*/}
-        {/*      name="avatar"*/}
-        {/*      label={intl.formatMessage({*/}
-        {/*        id: 'system.User.avatar',*/}
-        {/*        defaultMessage: '头像地址',*/}
-        {/*      })}*/}
-        {/*      width="xl"*/}
-        {/*      placeholder="请输入头像地址"*/}
-        {/*      rules={[*/}
-        {/*        {*/}
-        {/*          required: false,*/}
-        {/*          message: (*/}
-        {/*            <FormattedMessage id="请输入头像地址！" defaultMessage="请输入头像地址！" />*/}
-        {/*          ),*/}
-        {/*        },*/}
-        {/*      ]}*/}
-        {/*    />*/}
-        {/*  </Col>*/}
-        {/*</Row>*/}
+
 
         <Row gutter={[16, 16]}>
         </Row>
@@ -312,14 +237,15 @@ const TutorForm: React.FC<TutorFormProps> = (props) => {
         <Row gutter={[16, 16]}>
           <Col span={24} order={1}>
             <ProFormTextArea
-              name="remark"
-              label="研究方向"
+              readonly={isQueryMode}
+              name="tutorMajor"
+              label="专业领域"
               width="xl"
-              placeholder="请输入研究方向"
+              placeholder="请输入专业领域"
               rules={[
                 {
-                  required: false,
-                  message: <FormattedMessage id="请输入备注！" defaultMessage="请输入备注！" />,
+                  required: true,
+                  message: "请输入专业领域",
                 },
               ]}
             />

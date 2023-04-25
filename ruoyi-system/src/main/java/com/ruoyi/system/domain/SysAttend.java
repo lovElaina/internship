@@ -1,10 +1,10 @@
 package com.ruoyi.system.domain;
 
-import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.entity.User;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class SysAttend extends SysUser {
+public class SysAttend {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +22,7 @@ public class SysAttend extends SysUser {
 
     private Long lateDay;
 
-    private SysUser user;
+    private User user;
 
     //private Long delFlag;
 
@@ -102,11 +102,11 @@ public class SysAttend extends SysUser {
         this.status = status;
     }
 
-    public SysUser getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(SysUser user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -129,7 +129,6 @@ public class SysAttend extends SysUser {
                 .append("leaveDay", getLeaveDay())
                 .append("absentDay", getAbsentDay())
                 .append("status", getStatus())
-                .append("remark", getRemark())
                 .toString();
     }
 

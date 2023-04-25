@@ -1,6 +1,7 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
+import WrapContent from "@/components/WrapContent";
 import BaseView from './components/base';
 import BindingView from './components/binding';
 import NotificationView from './components/notification';
@@ -77,6 +78,7 @@ const Settings: React.FC = () => {
   };
 
   return (
+    <WrapContent>
     <GridContent>
       <div
         className={styles.main}
@@ -106,6 +108,7 @@ const Settings: React.FC = () => {
         </div>
       </div>
     </GridContent>
+    </WrapContent>
   );
 };
 export default Settings;

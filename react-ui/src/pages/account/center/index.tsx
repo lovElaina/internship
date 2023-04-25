@@ -38,11 +38,11 @@ const operationTabList = [
 ];
 
 const Center: React.FC = () => {
-  
+
   const [tabKey, setTabKey] = useState<tabKeyType>('base');
-  
+
   const [cropperModalVisible, setCropperModalVisible] = useState<boolean>(false);
-  
+
   //  获取用户信息
   const { data: userInfo, loading } = useRequest(() => {
     return queryCurrentUserInfo();
@@ -53,7 +53,7 @@ const Center: React.FC = () => {
   //  渲染用户信息
   const renderUserInfo = ({
     userName,
-    phonenumber,
+    phone,
     email,
     sex,
     dept,
@@ -91,7 +91,7 @@ const Center: React.FC = () => {
             />
             电话
           </div>
-          <div>{phonenumber}</div>
+          <div>{phone}</div>
         </List.Item>
         <List.Item>
           <div>
@@ -185,7 +185,7 @@ const Center: React.FC = () => {
       </Row>
       <AvatarCropper
         onFinished={() => {
-          setCropperModalVisible(false);     
+          setCropperModalVisible(false);
         }}
         visible={cropperModalVisible}
         data={currentUser.avatar}

@@ -87,21 +87,22 @@ export type Member = {
 
 export type ActivitiesType = {
   id: string;
-  updatedAt: string;
-  user: {
-    name: string;
-    avatar: string;
-  };
-  group: {
-    name: string;
-    link: string;
-  };
-  project: {
-    name: string;
-    link: string;
-  };
-
-  template: string;
+  text: string;
+  // updatedAt: string;
+  // user: {
+  //   name: string;
+  //   avatar: string;
+  // };
+  // group: {
+  //   name: string;
+  //   link: string;
+  // };
+  // project: {
+  //   name: string;
+  //   link: string;
+  // };
+  //
+  // template: string;
 };
 
 export type RadarDataType = {

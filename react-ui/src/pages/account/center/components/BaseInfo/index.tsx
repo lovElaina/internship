@@ -26,32 +26,29 @@ const BaseInfo: React.FC<BaseInfoProps> = (props) => {
   return (
     <>
       <ProForm form={form} onFinish={handleFinish} initialValues={props.values}>
+        {/*<Row>*/}
+        {/*  <ProFormText*/}
+        {/*    name="nickName"*/}
+        {/*    label={intl.formatMessage({*/}
+        {/*      id: 'system.User.nick_name',*/}
+        {/*      defaultMessage: '姓名',*/}
+        {/*    })}*/}
+        {/*    width="xl"*/}
+        {/*    placeholder="请输入姓名"*/}
+        {/*    rules={[*/}
+        {/*      {*/}
+        {/*        required: true,*/}
+        {/*        message: (*/}
+        {/*          <FormattedMessage id="请输入姓名" defaultMessage="请输入姓名" />*/}
+        {/*        ),*/}
+        {/*      },*/}
+        {/*    ]}*/}
+        {/*  />*/}
+        {/*</Row>*/}
         <Row>
           <ProFormText
-            name="nickName"
-            label={intl.formatMessage({
-              id: 'system.User.nick_name',
-              defaultMessage: '姓名',
-            })}
-            width="xl"
-            placeholder="请输入姓名"
-            rules={[
-              {
-                required: true,
-                message: (
-                  <FormattedMessage id="请输入姓名" defaultMessage="请输入姓名" />
-                ),
-              },
-            ]}
-          />
-        </Row>
-        <Row>
-          <ProFormText
-            name="phonenumber"
-            label={intl.formatMessage({
-              id: 'system.User.phonenumber',
-              defaultMessage: '手机号码',
-            })}
+            name="phone"
+            label='手机号码'
             width="xl"
             placeholder="请输入手机号码"
             rules={[

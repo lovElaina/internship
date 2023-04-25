@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.entity.User;
 import com.ruoyi.common.core.domain.model.RegisterBody;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.exception.user.CaptchaException;
@@ -41,8 +41,8 @@ public class SysRegisterService
     public String register(RegisterBody registerBody)
     {
         String msg = "", username = registerBody.getUsername(), password = registerBody.getPassword();
-        SysUser sysUser = new SysUser();
-        sysUser.setUserName(username);
+        User user = new User();
+        user.setUserName(username);
 
         // 验证码开关
         boolean captchaEnabled = configService.selectCaptchaEnabled();
@@ -69,15 +69,15 @@ public class SysRegisterService
         {
             msg = "密码长度必须在5到20个字符之间";
         }
-        else if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(sysUser)))
+        else if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user)))
         {
             msg = "保存用户'" + username + "'失败，注册账号已存在";
         }
         else
         {
-            sysUser.setNickName(username);
-            sysUser.setPassword(SecurityUtils.encryptPassword(password));
-            boolean regFlag = userService.registerUser(sysUser);
+            //user.setNickName(username);
+            user.setPassword(SecurityUtils.encryptPassword(password));
+            boolean regFlag = userService.registerUser(user);
             if (!regFlag)
             {
                 msg = "注册失败,请联系系统管理人员";

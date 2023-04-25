@@ -10,7 +10,7 @@ import {formatTreeSelectData} from "@/utils/utils";
 // 查询导师信息列表
 export async function getTutorList(params?: TutorListParams) {
   const queryString = new URLSearchParams(params).toString();
-  return request(`/system/user/tutorlist?${queryString}`, {
+  return request(`/system/tutor/list?${queryString}`, {
     data: params,
     method: 'GET',
     headers: {
@@ -19,32 +19,32 @@ export async function getTutorList(params?: TutorListParams) {
   });
 }
 
-// 查询用户信息详细
-export function getTutor(userId: number) {
-  return request(`/system/user/${userId}`, {
+// 查询导师信息详细
+export function getTutor(tutorId: number) {
+  return request(`/system/tutor/${tutorId}`, {
     method: 'GET',
   });
 }
 
-// 新增用户信息
+// 新增导师信息
 export async function addTutor(params: TutorType) {
-  return request('/system/user', {
+  return request('/system/tutor', {
     method: 'POST',
     data: params,
   });
 }
 
-// 修改用户信息
+// 修改导师信息
 export async function updateTutor(params: TutorType) {
-  return request('/system/user', {
+  return request('/system/tutor', {
     method: 'PUT',
     data: params,
   });
 }
 
-// 删除用户信息
+// 删除导师信息
 export async function removeTutor(ids: string) {
-  return request(`/system/user/${ids}`, {
+  return request(`/system/tutor/${ids}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
@@ -53,16 +53,16 @@ export async function removeTutor(ids: string) {
 }
 
 // 导出用户信息
-export function exportTutor(params?: TutorListParams) {
-  return downLoadXlsx(`/system/user/export`, { params }, `user_${new Date().getTime()}.xlsx`);
-}
-
-export function updateUserProfile(data: API.CurrentUser) {
-  return request('/system/user/profile', {
-    method: 'put',
-    data: data
-  })
-}
+// export function exportTutor(params?: TutorListParams) {
+//   return downLoadXlsx(`/system/user/export`, { params }, `user_${new Date().getTime()}.xlsx`);
+// }
+//
+// export function updateUserProfile(data: API.CurrentUser) {
+//   return request('/system/user/profile', {
+//     method: 'put',
+//     data: data
+//   })
+// }
 
 // 用户密码重置
 export function updateTutorPwd(oldPassword: string, newPassword: string) {
@@ -77,12 +77,12 @@ export function updateTutorPwd(oldPassword: string, newPassword: string) {
 }
 
 // 用户头像上传
-export function uploadAvatar(data: any) {
-  return request('/system/user/profile/avatar', {
-    method: 'post',
-    data: data
-  })
-}
+// export function uploadAvatar(data: any) {
+//   return request('/system/user/profile/avatar', {
+//     method: 'post',
+//     data: data
+//   })
+// }
 
 // 获取数据列表
 export function getDeptTree(params: any): Promise<DataNode[]> {

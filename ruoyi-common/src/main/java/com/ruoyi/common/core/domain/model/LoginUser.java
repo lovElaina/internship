@@ -2,10 +2,11 @@ package com.ruoyi.common.core.domain.model;
 
 import java.util.Collection;
 import java.util.Set;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.alibaba.fastjson2.annotation.JSONField;
-import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.entity.User;
 
 /**
  * 登录用户身份权限
@@ -69,7 +70,7 @@ public class LoginUser implements UserDetails
     /**
      * 用户信息
      */
-    private SysUser user;
+    private User user;
 
     public Long getUserId()
     {
@@ -105,13 +106,13 @@ public class LoginUser implements UserDetails
     {
     }
 
-    public LoginUser(SysUser user, Set<String> permissions)
+    public LoginUser(User user, Set<String> permissions)
     {
         this.user = user;
         this.permissions = permissions;
     }
 
-    public LoginUser(Long userId, Long deptId, SysUser user, Set<String> permissions)
+    public LoginUser(Long userId, Long deptId, User user, Set<String> permissions)
     {
         this.userId = userId;
         this.deptId = deptId;
@@ -248,12 +249,12 @@ public class LoginUser implements UserDetails
         this.permissions = permissions;
     }
 
-    public SysUser getUser()
+    public User getUser()
     {
         return user;
     }
 
-    public void setUser(SysUser user)
+    public void setUser(User user)
     {
         this.user = user;
     }

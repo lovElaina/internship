@@ -2,6 +2,10 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.Set;
+
+import com.ruoyi.common.core.domain.entity.*;
+import com.ruoyi.system.domain.Post;
+import com.ruoyi.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,13 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysMenu;
-import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginBody;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.framework.web.service.SysLoginService;
 import com.ruoyi.framework.web.service.SysPermissionService;
-import com.ruoyi.system.service.ISysMenuService;
 
 /**
  * 登录验证
@@ -33,6 +34,18 @@ public class SysLoginController
 
     @Autowired
     private SysPermissionService permissionService;
+
+    @Autowired
+    private ISysTutorService tutorService;
+
+    @Autowired
+    private ISysStudentService studentService;
+
+    @Autowired
+    private ISysCompanyService companyService;
+
+    @Autowired
+    private ISysPostService postService;
 
     /**
      * 登录方法
@@ -59,12 +72,32 @@ public class SysLoginController
     @GetMapping("getInfo")
     public AjaxResult getInfo()
     {
-        SysUser user = SecurityUtils.getLoginUser().getUser();
+        User user = SecurityUtils.getLoginUser().getUser();
+        AjaxResult ajax = AjaxResult.success();
         // 角色集合
         Set<String> roles = permissionService.getRolePermission(user);
         // 权限集合
         Set<String> permissions = permissionService.getMenuPermission(user);
-        AjaxResult ajax = AjaxResult.success();
+        if(user.getRoleId()==3){
+            Tutor tutor = tutorService.selectTutorByUserId(user.getUserId());
+            ajax.put("resId", tutor.getTutorId());
+            ajax.put("tutorInfo",tutor);
+        }
+        if(user.getRoleId()==4){
+            Student student = studentService.selectStudentByUserId(user.getUserId());
+            Post post = postService.selectPostById(student.getPostId());
+            Company company = companyService.selectCompanyById(post.getCompanyId());
+            ajax.put("resId", student.getStuId());
+            ajax.put("stuInfo",student);
+            ajax.put("postInfo",post);
+            ajax.put("companyInfo",company);
+        }
+        if(user.getRoleId()==5){
+            Company company = companyService.selectCompanyByUserId(user.getUserId());
+            ajax.put("resId",company.getCompanyId());
+            ajax.put("companyInfo",company);
+        }
+
         ajax.put("user", user);
         ajax.put("roles", roles);
         ajax.put("permissions", permissions);

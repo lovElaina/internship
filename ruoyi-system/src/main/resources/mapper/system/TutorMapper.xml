@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TutorMapper">
+
+    <resultMap type="Tutor" id="TutorResult">
+        <result property="tutorId"       column="tutor_id"       />
+        <result property="userId"    column="user_id"    />
+        <result property="tutorName"  column="tutor_name"  />
+        <result property="tutorNumber"  column="tutor_number"  />
+        <result property="tutorGender"  column="tutor_gender"  />
+        <result property="tutorType"  column="tutor_type"  />
+        <result property="tutorMajor"  column="tutor_major"  />
+        <result property="delFlag"  column="del_flag"  />
+    </resultMap>
+
+    <select id="selectTutorList" parameterType="Tutor" resultMap="TutorResult">
+        select * from tutor where del_flag = '0'
+    </select>
+    
+    <select id="selectTutorListByTutorId" parameterType="Long" resultMap="TutorResult">
+        select * from tutor where del_flag = '0' and tutor_id = #{tutorId}
+    </select>
+
+    <select id="selectTutorByUserId" parameterType="Long" resultMap="TutorResult">
+        select * from tutor where del_flag = '0' and user_id = #{userId}
+    </select>
+
+    <insert id="insertTutor" parameterType="Tutor" useGeneratedKeys="true" keyProperty="tutorId">
+        insert into tutor(
+        <if test="tutorId != null and tutorId != 0">tutor_id,</if>
+        <if test="userId != null and userId != 0">user_id,</if>
+        <if test="tutorName != null and tutorName != ''">tutor_name,</if>
+        <if test="tutorNumber != null and tutorNumber != 0">tutor_number,</if>
+        <if test="tutorGender != null and tutorGender != ''">tutor_gender,</if>
+        <if test="tutorType != null and tutorType != ''">tutor_type,</if>
+        <if test="tutorMajor != null and tutorMajor != ''">tutor_major,</if>
+        del_flag
+        )values(
+        <if test="tutorId != null and tutorId != 0">#{tutorId},</if>
+        <if test="userId != null and userId != 0">#{userId},</if>
+        <if test="tutorName != null and tutorName != ''">#{tutorName},</if>
+        <if test="tutorNumber != null and tutorNumber != 0">#{tutorNumber},</if>
+        <if test="tutorGender != null and tutorGender != ''">#{tutorGender},</if>
+        <if test="tutorType != null and tutorType != ''">#{tutorType},</if>
+        <if test="tutorMajor != null and tutorMajor != ''">#{tutorMajor},</if>
+        '0'
+        )
+    </insert>
+
+
+    <update id="updateTutor" parameterType="Tutor">
+        update tutor
+        <set>
+            <if test="tutorId != null and tutorId != 0">tutor_id = #{tutorId},</if>
+            <if test="userId != null and userId != 0">user_id = #{userId},</if>
+            <if test="tutorName != null and tutorName != ''">tutor_name = #{tutorName},</if>
+            <if test="tutorNumber != null and tutorNumber != 0">tutor_number = #{tutorNumber},</if>
+            <if test="tutorGender != null and tutorGender != ''">tutor_gender = #{tutorGender},</if>
+            <if test="tutorType != null and tutorType != ''">tutor_type = #{tutorType},</if>
+            <if test="tutorMajor != null and tutorMajor != ''">tutor_major = #{tutorMajor},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </set>
+        where tutor_id = #{tutorId}
+    </update>
+
+
+    <delete id="deleteTutorById" parameterType="Long">
+        update tutor set del_flag = '2' where tutor_id = #{tutorId}
+    </delete>
+
+</mapper>

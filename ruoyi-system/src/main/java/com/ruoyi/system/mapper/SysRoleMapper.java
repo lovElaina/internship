@@ -26,12 +26,7 @@ public interface SysRoleMapper
      */
     public List<SysRole> selectRolePermissionByUserId(Long userId);
 
-    /**
-     * 查询所有角色
-     * 
-     * @return 角色列表
-     */
-    public List<SysRole> selectRoleAll();
+
 
     /**
      * 根据用户ID获取角色选择框列表
