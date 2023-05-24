@@ -40,10 +40,10 @@ const PageHeaderContent: FC<{ currentUser: Partial<CurrentUser> }> = ({ currentU
         <div className={styles.contentTitle}>
           {dateState()+"，"}
           {currentUser.name}
-          ，祝你开心每一天！
+          {currentUser.isNot==="0"?<div style={{display:"inline"}}>，请前往事务申请模块，申请开始实习</div>:<div style={{display:"inline"}}>，祝你开心每一天！</div>}
         </div>
         <div>
-          {currentUser.title} |{currentUser.group}
+          {currentUser.title} | {currentUser.isNot==="0"? <div style={{display:"inline"}}>暂无实习单位信息</div>:<div style={{display:"inline"}}>{currentUser.group}</div>}
         </div>
       </div>
     </div>
@@ -122,6 +122,7 @@ const Workplace: FC = (info) => {
     history.push("/affairs")
   }
 
+
   return (
     <div>
       <WrapContent>
@@ -130,6 +131,7 @@ const Workplace: FC = (info) => {
           content={
             <PageHeaderContent
               currentUser={{
+                isNot: info.info?.stuInfo?.internshipStatus,
                 avatar: info.info?.user?.avatar,
                 name: info.info?.stuInfo?.stuName,
                 userid: '00000001',
@@ -140,7 +142,7 @@ const Workplace: FC = (info) => {
               }}
             />
           }
-          extraContent={<ExtraContent />}
+          extraContent={info.info?.stuInfo?.internshipStatus==="0"?<div/>:<ExtraContent />}
         >
         </PageContainer>
       </WrapContent>
@@ -170,7 +172,7 @@ const Workplace: FC = (info) => {
 
             </Card>
             {
-              activities ? <Card
+              activities && info.info?.stuInfo?.internshipStatus!=="0" ? <Card
                 bodyStyle={{ padding: 0 }}
                 bordered={false}
                 className={styles.activeCard}
@@ -189,15 +191,8 @@ const Workplace: FC = (info) => {
 
           </Col>
           <Col xl={8} lg={24} md={24} sm={24} xs={24}>
-            {/*<Card*/}
-            {/*  style={{ marginBottom: 24 }}*/}
-            {/*  title="快速开始 / 便捷导航"*/}
-            {/*  bordered={false}*/}
-            {/*  bodyStyle={{ padding: 0 }}*/}
-            {/*>*/}
-            {/*  <EditableLinkGroup onAdd={() => { }} links={links} linkElement={Link} />*/}
-            {/*</Card>*/}
-            <Card
+
+            {activities && info.info?.stuInfo?.internshipStatus!=="0" ? <Card
               style={{ marginBottom: 24 }}
               bordered={false}
               title="实习概况"
@@ -221,8 +216,10 @@ const Workplace: FC = (info) => {
                   }}
                 />
               </div>
-            </Card>
-            <Card
+            </Card> :<div/>}
+
+            {activities && info.info?.stuInfo?.internshipStatus!=="0" ?
+              <Card
               bodyStyle={{ paddingTop: 12, paddingBottom: 12 }}
               bordered={false}
               title="团队"
@@ -240,7 +237,7 @@ const Workplace: FC = (info) => {
                   ))}
                 </Row>
               </div>
-            </Card>
+            </Card> :<div/>}
           </Col>
         </Row>
       </div>

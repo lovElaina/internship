@@ -337,17 +337,17 @@ const DictDataTableList: React.FC<DictDataProps> = (props) => {
               <DeleteOutlined />
               <FormattedMessage id="pages.searchTable.delete" defaultMessage="删除" />
             </Button>,
-            <Button
-              type="primary"
-              key="export"
-              hidden={!access.hasPerms('system:dictData:export')}
-              onClick={async () => {
-                handleExport();
-              }}
-            >
-              <PlusOutlined />
-              <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
-            </Button>,
+            // <Button
+            //   type="primary"
+            //   key="export"
+            //   hidden={!access.hasPerms('system:dictData:export')}
+            //   onClick={async () => {
+            //     handleExport();
+            //   }}
+            // >
+            //   <PlusOutlined />
+            //   <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
+            // </Button>,
             <Button
               type="primary"
               key="goBack"

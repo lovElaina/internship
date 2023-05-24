@@ -102,24 +102,25 @@ const handleRemove = async (selectedRows: UserType[]) => {
 };
 
 const handleRemoveOne = async (selectedRow: UserType) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRow) return true;
-  try {
-    //const params = [selectedRow.userId];
-    const params = selectedRow.stuId;
-    const resp = await removeUser(params);
-    hide();
-    if (resp.code === 200) {
-      message.success('删除成功，即将刷新');
-    } else {
-      message.error(resp.msg);
-    }
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
+  message.error('删除失败，该学生状态为"实习中"');
+  // const hide = message.loading('正在删除');
+  // if (!selectedRow) return true;
+  // try {
+  //   //const params = [selectedRow.userId];
+  //   const params = selectedRow.stuId;
+  //   const resp = await removeUser(params);
+  //   hide();
+  //   if (resp.code === 200) {
+  //     message.success('删除成功，即将刷新');
+  //   } else {
+  //     message.error(resp.msg);
+  //   }
+  //   return true;
+  // } catch (error) {
+  //   hide();
+  //   message.error('删除失败，请重试');
+  //   return false;
+  // }
 };
 
 /**
@@ -314,6 +315,7 @@ const UserTableList: React.FC = () => {
       dataIndex: 'startTime',
       render:(_)=>{
         let d = new Date(_-0);
+        if(_==="-")return "-"
         return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
       }
     },
@@ -323,6 +325,7 @@ const UserTableList: React.FC = () => {
       dataIndex: 'endTime',
       render:(_)=>{
         let d = new Date(_-0);
+        if(_==="-")return "-"
         return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
       }
     },
@@ -452,90 +455,100 @@ const UserTableList: React.FC = () => {
           </Col>)}
 
         <Col lg={currentUser?.user?.roleId == 5 ? 24 : 18} md={24}>
-          <ProTable<UserType>
-            headerTitle="学生列表"
-            actionRef={actionRef}
-            formRef={formTableRef}
-            rowKey="userId"
-            key="userList"
-            search={{
-              labelWidth: 120,
-            }}
-            toolBarRender={() => [
-              <Button
-                type="primary"
-                key="add"
-                hidden={!access.hasPerms('system:user:add')}
-                onClick={async () => {
+          {currentUser?
+            <ProTable<UserType>
+              headerTitle="学生列表"
+              actionRef={actionRef}
+              formRef={formTableRef}
+              rowKey="userId"
+              key="userList"
+              search={{
+                labelWidth: 120,
+              }}
+              toolBarRender={() => [
+                <Button
+                  type="primary"
+                  key="add"
+                  hidden={!access.hasPerms('system:user:add')}
+                  onClick={async () => {
 
-                  fetchPostList();
+                    fetchPostList();
 
-                  if (selectDept.id === '' || selectDept.id == null) {
-                    message.warning('请选择左侧父级节点');
-                  } else {
-                    getDeptTree({}).then((treeData) => {
-                      setDeptTree(treeData);
-                      setCurrentRow(undefined);
-                      setModalVisible(true);
-                    });
+                    if (selectDept.id === '' || selectDept.id == null) {
+                      message.warning('请选择左侧父级节点');
+                    } else {
+                      getDeptTree({}).then((treeData) => {
+                        setDeptTree(treeData);
+                        setCurrentRow(undefined);
+                        setModalVisible(true);
+                      });
+                    }
+                  }}
+                >
+                  <PlusOutlined />{' '}
+                  <FormattedMessage id="pages.searchTable.new" defaultMessage="新建" />
+                </Button>,
+
+                <Button
+                  type="primary"
+                  key="remove"
+                  hidden={selectedRowsState?.length === 0 || !access.hasPerms('system:user:remove')}
+                  onClick={async () => {
+                    const success = await handleRemove(selectedRowsState);
+                    if (success) {
+                      setSelectedRows([]);
+                      actionRef.current?.reloadAndRest?.();
+                    }
+                  }}
+                >
+                  <DeleteOutlined />
+                  <FormattedMessage id="pages.searchTable.delete" defaultMessage="删除" />
+                </Button>,
+
+
+                // <Button
+                //   type="primary"
+                //   key="export"
+                //   hidden={!access.hasPerms('system:user:export')}
+                //   onClick={async () => {
+                //     handleExport();
+                //   }}
+                // >
+                //   <PlusOutlined />
+                //   <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
+                // </Button>,
+              ]}
+              request={(params) =>
+                getStudentListByDeptId({ ...params, deptId: selectDept.id } as UserListParams).then((res) => {
+                  console.log(res)
+                  console.log(currentUser)
+                  let tmp = res.rows;
+                  if(currentUser.stuList!==undefined){
+                    let arr = currentUser.stuList.map((e: { stuId: any; })=>{
+                      return e.stuId;
+                    })
+                    //包含符合要求（该企业负责）的所有学生id
+                    tmp = tmp.filter(e=>{
+                      console.log(e)
+                      return arr.includes(e.stuId)
+                    })
+                    console.log(tmp)
                   }
-                }}
-              >
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="新建" />
-              </Button>,
+                  return {
+                    data: tmp,
+                    total: tmp.length,
+                    success: true,
+                  };
+                })
+              }
+              columns={columns}
+              rowSelection={{
+                onChange: (_, selectedRows) => {
+                  setSelectedRows(selectedRows);
+                },
+              }}
+            />:<div/>}
 
-
-
-
-              <Button
-                type="primary"
-                key="remove"
-                hidden={selectedRowsState?.length === 0 || !access.hasPerms('system:user:remove')}
-                onClick={async () => {
-                  const success = await handleRemove(selectedRowsState);
-                  if (success) {
-                    setSelectedRows([]);
-                    actionRef.current?.reloadAndRest?.();
-                  }
-                }}
-              >
-                <DeleteOutlined />
-                <FormattedMessage id="pages.searchTable.delete" defaultMessage="删除" />
-              </Button>,
-
-
-
-
-
-              <Button
-                type="primary"
-                key="export"
-                hidden={!access.hasPerms('system:user:export')}
-                onClick={async () => {
-                  handleExport();
-                }}
-              >
-                <PlusOutlined />
-                <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
-              </Button>,
-            ]}
-            request={(params) =>
-              getStudentListByDeptId({ ...params, deptId: selectDept.id } as UserListParams).then((res) => {
-                return {
-                  data: res.rows,
-                  total: res.total,
-                  success: true,
-                };
-              })
-            }
-            columns={columns}
-            rowSelection={{
-              onChange: (_, selectedRows) => {
-                setSelectedRows(selectedRows);
-              },
-            }}
-          />
         </Col>
       </Row>
 

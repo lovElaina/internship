@@ -1,11 +1,11 @@
 import {CoffeeOutlined, FormOutlined} from '@ant-design/icons';
-import {Button, Col, Modal, Row, message, Tag} from 'antd';
+import {Button, Col, Modal, Row, message, Tag, Divider} from 'antd';
 import React, {useEffect, useRef, useState} from 'react';
 import {FormattedMessage, useAccess, useIntl} from 'umi';
 import WrapContent from '@/components/WrapContent';
 import ProTable from '@ant-design/pro-table';
 import {
-  getAttendLogListByStuId, getReportLogListByStuId,
+  getAttendLogListByStuId, getReportLogListByStuId, getScore,
   queryCurrentUserInfo,
   updateAttend,
   updateLog, updateReportText
@@ -43,14 +43,20 @@ const PostTableList = () => {
 
   const actionRef = useRef();
 
-  const [logList, setLogList] = useState();
 
   const [stuInfo, setStuInfo] = useState()
+
+  const [stuScore, setStuScore] = useState()
 
   //const [modalVisible, setModalVisible] = useState(false);
   //const [currentRow, setCurrentRow] = useState();
 
   const access = useAccess();
+
+  const gridStyle = {
+    width: '25%',
+    textAlign: 'center',
+  };
 
   /** 国际化配置 */
   const intl = useIntl();
@@ -61,7 +67,11 @@ const PostTableList = () => {
   console.log(userInfo);
 
   useEffect(() => {
-    setStuInfo(userInfo)
+    //setStuInfo(userInfo)
+    getScore(userInfo?.stuInfo?.stuId).then(res=>{
+      console.log(res.data)
+      setStuScore(res.data)
+    })
 
   }, [userInfo])
 
@@ -74,73 +84,44 @@ const PostTableList = () => {
 
 
   return (
+
     <WrapContent>
       {
-        (stuInfo) ? <Row gutter={16}>
+        userInfo?.stuInfo.internshipStatus!=="0" ?
+          <>
+          <Card title="成绩详情" style={{fontWeight:"bold",fontSize:"16px"}}>
+            <Card.Grid style={gridStyle}>考勤得分</Card.Grid>
+            <Card.Grid style={gridStyle}>表现得分</Card.Grid>
+            <Card.Grid style={gridStyle}>实习报告得分（企业）</Card.Grid>
+            <Card.Grid style={gridStyle}>实习报告得分（导师）</Card.Grid>
+            <Card.Grid style={gridStyle}>{stuScore?.attendScore ? (stuScore.attendScore <=60 ? <div style={{color:"red"}}>{stuScore.attendScore}</div>:<div style={{color:"green"}}>{stuScore.attendScore}</div> ) : '暂无'}</Card.Grid>
+            <Card.Grid style={gridStyle}>{stuScore?.actionCompanyScore ? (stuScore.actionCompanyScore <= 60 ? <div style={{color:"red"}}>{stuScore.actionCompanyScore}</div>:<div style={{color:"green"}}>{stuScore.actionCompanyScore}</div> ) : '暂无'}</Card.Grid>
+            <Card.Grid style={gridStyle}>{stuScore?.reportCompanyScore ? (stuScore.reportCompanyScore <= 60 ? <div style={{color:"red"}}>{stuScore.reportCompanyScore}</div>:<div style={{color:"green"}}>{stuScore.reportCompanyScore}</div>) : '暂无'}</Card.Grid>
+            <Card.Grid style={gridStyle}>{stuScore?.reportTutorScore ? (stuScore.reportTutorScore <= 60 ? <div style={{color:"red"}}>{stuScore.reportTutorScore}</div>:<div style={{color:"green"}}>{stuScore.reportTutorScore}</div>) : '暂无'}</Card.Grid>
+          </Card>
 
-          <Col span={3}>
-            <Card title="应交日报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>
-              Card content
-            </Card>
-          </Col>
-          <Col span={3}>
-            <Card title="实交日报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>
-              Card content
-            </Card>
-          </Col>
+          <div style={{width: '100%', float: 'right', marginTop: "24px"}}/>
 
-          <Col span={3}>
-            <Card title="应交周报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>
-              Card content
-            </Card>
-          </Col>
+        <Row gutter={[16,16]}>
 
-          <Col span={3}>
-            <Card title="实交周报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>
-              Card content
-            </Card>
+        <Col span={12} order={1}>
+        <Card title="总评分" bordered={false} headStyle={{textAlign:"center",fontWeight:"bold"}} style={{textAlign:"center",fontWeight:"bold",height:160,fontSize:30}}>
+      {stuScore?.totalScore ? (stuScore.totalScore <= 60 ? <div style={{color:"red"}}>{stuScore.totalScore}</div>:<div style={{color:"green"}}>{stuScore.totalScore}</div>) : '暂无'}
+        </Card>
+        </Col>
+        <Col span={12} order={2}>
+        <Card title="提示信息" bordered={false}>
+        <div style={{color:"red",fontSize:'16px',fontWeight:"bold"}}>{stuScore?.tutorComplete !== "1" || stuScore?.companyComplete !== "1" ? "实习报告部分成绩不完整，存在以下问题：" : ""}</div>
+        <div>{stuScore?.tutorComplete !== "1" ? "导师未批阅所有实习报告，请尽快联系导师处理。":""}</div>
+        <div>{stuScore?.companyComplete !== "1" ? "企业未批阅所有实习报告，请尽快联系企业处理。":""}</div>
+        </Card>
+        </Col>
+        </Row>
+          </>: <Col span={8}>
+            <Card title="提示信息"><div>当前无进行中的实习，请在事务申请中提交实习申请</div></Card>
           </Col>
-
-          <Col span={3}>
-            <Card title="应交月报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>
-              Card content
-            </Card>
-          </Col>
-
-          <Col span={3}>
-            <Card title="实交月报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>
-              Card content
-            </Card>
-          </Col>
-
-          <Col span={3}>
-            <Card title="提交率" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>
-              Card content
-            </Card>
-          </Col>
-
-          <Col span={3}>
-            <Card title="平均分" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>
-              Card content
-            </Card>
-          </Col>
-
-        </Row> : <div/>
       }
 
-
-
-
-
-      <div style={{width: '100%', float: 'right', marginTop: "24px"}}>
-
-        {
-          stuInfo ? <div>haha</div>: <div>loading...</div>
-
-            }
-
-          </div>
-        }
 
 
 

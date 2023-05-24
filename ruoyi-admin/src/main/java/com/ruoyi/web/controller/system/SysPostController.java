@@ -40,7 +40,7 @@ public class SysPostController extends BaseController
     /**
      * 获取岗位列表
      */
-    @PreAuthorize("@ss.hasPermi('system:post:list')")
+    //@PreAuthorize("@ss.hasPermi('system:post:list')")
     @GetMapping("/list")
     public TableDataInfo list(Post post)
     {
@@ -62,7 +62,7 @@ public class SysPostController extends BaseController
     /**
      * 根据岗位编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:post:query')")
+    //@PreAuthorize("@ss.hasPermi('system:post:query')")
     @GetMapping(value = "/{postId}")
     public AjaxResult getInfo(@PathVariable Long postId)
     {
@@ -94,12 +94,12 @@ public class SysPostController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody Post post)
     {
-        List<Post> list = postService.selectPostAll();
-        for(Post l : list){
-            if(Objects.equals(l.getCompanyId(), post.getCompanyId()) && Objects.equals(l.getPostName(), post.getPostName())){
-                return AjaxResult.error("修改岗位'" + post.getPostName() + "'失败，岗位已存在");
-            }
-        }
+//        List<Post> list = postService.selectPostAll();
+//        for(Post l : list){
+//            if(Objects.equals(l.getCompanyId(), post.getCompanyId()) && Objects.equals(l.getPostName(), post.getPostName())){
+//                return AjaxResult.error("修改岗位'" + post.getPostName() + "'失败，岗位已存在");
+//            }
+//        }
         return toAjax(postService.updatePost(post));
     }
 

@@ -15,7 +15,6 @@ export const isAntDesignPro = (): boolean => {
   return window.location.hostname === 'preview.pro.ant.design';
 };
 
-// 给官方演示站点用，用于关闭真实开发环境不需要使用的特性
 export const isAntDesignProOrDev = (): boolean => {
   const { NODE_ENV } = process.env;
   if (NODE_ENV === 'development') {
@@ -25,7 +24,7 @@ export const isAntDesignProOrDev = (): boolean => {
 };
 
 export function trim(x: string) {
-  return x.replace(/^\s+|\s+$/gm,'');  
+  return x.replace(/^\s+|\s+$/gm,'');
 }
 
 /**

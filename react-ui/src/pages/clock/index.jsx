@@ -196,7 +196,7 @@ const PostTableList = () => {
   return (
     <WrapContent>
       {
-        (stuInfo && logList) ? <Row gutter={16}>
+        (stuInfo && logList && stuInfo.stuInfo.internshipStatus!=="0") ? <Row gutter={16}>
 
           <Col span={6}>
             <Button type="primary"
@@ -278,7 +278,7 @@ const PostTableList = () => {
 
       <div style={{width: '100%', float: 'right', marginTop: "24px"}}>
 
-        {stuInfo ?
+        {stuInfo && stuInfo.stuInfo.internshipStatus!=="0" ?
 
           <ProTable
             headerTitle="打卡记录"
@@ -303,7 +303,9 @@ const PostTableList = () => {
             columns={columns}
           />
 
-          : <div>loading...</div>}
+          :<Col span={8} style={{marginTop:"-24px"}}>
+            <Card title="提示信息"><div>当前无进行中的实习，请在事务申请中提交实习申请</div></Card>
+          </Col>}
 
       </div>
 

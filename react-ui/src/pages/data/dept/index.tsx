@@ -279,6 +279,7 @@ const DeptTableList: React.FC = () => {
           ]}
           request={(params) =>
             getDeptList({ ...params } as DeptListParams).then((res) => {
+              console.log(buildTreeData(res.data, 'deptId', '', '', '', ''))
               return {
                 data: buildTreeData(res.data, 'deptId', '', '', '', ''),
                 total: res.data.length,

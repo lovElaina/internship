@@ -13,6 +13,7 @@ import ApplyForm from "./components/edit";
 import Card from "antd/es/card";
 import {useRequest} from "@@/plugin-request/request";
 import {queryCurrentUserInfo} from "@/pages/clock/service";
+import {getPostList} from "@/pages/data/post/service";
 
 
 /**
@@ -38,28 +39,7 @@ import {queryCurrentUserInfo} from "@/pages/clock/service";
 //   }
 // };
 
-/**
- * 更新节点
- *
- * @param fields
- */
-const handleUpdate = async (fields) => {
-  const hide = message.loading('正在配置');
-  try {
-    const resp = await updatePost(fields);
-    hide();
-    if(resp.code === 200) {
-      message.success('配置成功');
-    } else {
-      message.error(resp.msg);
-    }
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
+
 
 
 
@@ -74,9 +54,24 @@ const PostTableList = () => {
 
   const [respTypeOptions, setRespTypeOptions] = useState([]);
 
+  const [postList, setPostList] = useState([]);
+
   const [stuInfo, setStuInfo] = useState()
 
   const access = useAccess();
+
+  const fetchPostList = async() => {
+    const res = await getPostList();
+
+    console.log(res)
+    setPostList(
+      res.rows.map((item)=>{
+        return{
+          value: item.postId,
+          label: item.extra.companyname + " - " + item.extra.departmentname + " - " + item.postName
+        }
+      }))
+  }
 
   /** 国际化配置 */
   const intl = useIntl();
@@ -111,6 +106,8 @@ const PostTableList = () => {
         setRespTypeOptions(opts);
       }
     });
+    fetchPostList();
+
   }, []);
 
 
@@ -118,16 +115,17 @@ const PostTableList = () => {
   const columns = [
     {
       title: "申请人",
-      dataIndex: 'studentName',
+      dataIndex: ['extra','stuname'],
       valueType: 'text',
     },
     {
       title: "学号",
-      dataIndex: 'studentId',
+      dataIndex: ['extra','stunumber'],
       valueType: 'text',
     },
     {
       title: "申请日期",
+      hideInSearch: true,
       dataIndex: 'applyTime',
       render:(_)=>{
         let d = new Date(_-0);
@@ -141,12 +139,20 @@ const PostTableList = () => {
       valueEnum: applyTypeOptions,
     },
     {
-      title: "详情",
+      title: "所在岗位",
+      dataIndex: ['extra','post'],
+      valueType: 'text',
+      width: 300
+    },
+    {
+      title: "申请理由",
       dataIndex: 'applyDetail',
       valueType: 'text',
+      width: 300
     },
     {
       title: "开始日期",
+      hideInSearch: true,
       dataIndex: 'startTime',
       render:(_)=>{
         let d = new Date(_-0);
@@ -155,6 +161,7 @@ const PostTableList = () => {
     },
     {
       title: "结束日期",
+      hideInSearch: true,
       dataIndex: 'endTime',
       render:(_)=>{
         let d = new Date(_-0);
@@ -163,8 +170,24 @@ const PostTableList = () => {
     },
 
     {
+      title: "审批者",
+      hideInSearch: true,
+      dataIndex: 'applyRole',
+      render:(_)=>{
+        if(_==="0")return "企业"
+        if(_==="1")return "导师"
+        if(_==="2")return "教务"
+      }
+    },
+    {
+      title: "拒绝原因",
+      hideInSearch: true,
+      dataIndex: 'refuseDetail',
+    },
+
+    {
       title: "状态",
-      dataIndex: 'status',
+      dataIndex: 'applyStatus',
       valueType: 'select',
       valueEnum: respTypeOptions,
     },
@@ -174,7 +197,7 @@ const PostTableList = () => {
   return (
     <WrapContent>
       <Card style={{marginBottom:"24px"}}>
-        <ApplyForm/>
+        <ApplyForm posts={postList || []} stuInfo={stuInfo || [] } actionRef={actionRef}/>
       </Card>
 
 
@@ -189,17 +212,27 @@ const PostTableList = () => {
             key="postList"
             search={false}
 
-            request={(params) =>
-              //params.userId = stuInfo.user.userId;
-              getApplyList({...params,userId:stuInfo.user.userId}).then((res) => {
-                console.log(res)
+            // request={(params) =>
+            //   //params.userId = stuInfo.user.userId;
+            //   getApplyList({...params,userId:stuInfo.user.userId}).then((res) => {
+            //     console.log(res)
+            //     return {
+            //       data: res.rows,
+            //       total: res.total,
+            //       success: true,
+            //     };
+            //   })
+            //
+            // }
+
+            request={() =>
+              getApplyList().then((res) => {
                 return {
                   data: res.rows,
                   total: res.total,
                   success: true,
                 };
               })
-
             }
             columns={columns}
           /> : <div/>

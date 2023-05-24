@@ -85,17 +85,27 @@ public class SysLoginController
         }
         if(user.getRoleId()==4){
             Student student = studentService.selectStudentByUserId(user.getUserId());
-            Post post = postService.selectPostById(student.getPostId());
-            Company company = companyService.selectCompanyById(post.getCompanyId());
-            ajax.put("resId", student.getStuId());
-            ajax.put("stuInfo",student);
-            ajax.put("postInfo",post);
-            ajax.put("companyInfo",company);
+            if(student.getPostId()==null){
+                ajax.put("resId", student.getStuId());
+                ajax.put("stuInfo",student);
+                ajax.put("postInfo",null);
+                ajax.put("companyInfo",null);
+            }else {
+                Post post = postService.selectPostById(student.getPostId());
+                Company company = companyService.selectCompanyById(post.getCompanyId());
+                ajax.put("resId", student.getStuId());
+                ajax.put("stuInfo",student);
+                ajax.put("postInfo",post);
+                ajax.put("companyInfo",company);
+            }
+
         }
         if(user.getRoleId()==5){
             Company company = companyService.selectCompanyByUserId(user.getUserId());
+            List<Long> stuList = companyService.selectStudentListByCompanyId(company.getCompanyId());
             ajax.put("resId",company.getCompanyId());
             ajax.put("companyInfo",company);
+            ajax.put("stuList",stuList);
         }
 
         ajax.put("user", user);

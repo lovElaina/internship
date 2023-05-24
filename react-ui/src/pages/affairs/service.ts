@@ -1,5 +1,6 @@
 import { downLoadXlsx } from '@/utils/downloadfile';
 import request from '@/utils/request';
+import {UserType} from "@/pages/data/student/data";
 //import type { PostType, PostListParams } from './data.d';
 
 
@@ -21,6 +22,15 @@ export async function updatePost (params) {
   return request('/internship/apply', {
     method: 'PUT',
     data: params
+  });
+}
+
+// 新增申请信息
+// @ts-ignore
+export async function addApply(params) {
+  return request('/internship/apply', {
+    method: 'POST',
+    data: params,
   });
 }
 

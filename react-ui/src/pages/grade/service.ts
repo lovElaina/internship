@@ -6,18 +6,17 @@ export async function queryCurrentUserInfo(): Promise<{ data: API.GetUserInfoRes
 }
 
 
-// // 查询个人报告记录列表
-// // @ts-ignore
-// export async function getReportLogListByStuId (params,stuId) {
-//   const queryString = new URLSearchParams(params).toString();
-//   return request(`/system/report/${stuId}?${queryString}`, {
-//     //data: params,
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json;charset=UTF-8',
-//     }
-//   });
-// }
+// 查询个人报告记录列表
+// @ts-ignore
+export async function getScore (stuId) {
+  return request(`/system/score/${stuId}`, {
+    //data: params,
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    }
+  });
+}
 //
 //
 // // 提交报告

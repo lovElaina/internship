@@ -39,8 +39,12 @@
 <!--    </select>-->
 
     <select id="selectPostList" parameterType="Post" resultMap="PostResult">
-        select * from post where del_flag = '0'
+        select * from post
         <where>
+            del_flag = '0'
+            <if test="companyId != null and companyId != ''">
+                AND company_id = #{companyId}
+            </if>
             <if test="postName != null and postName != ''">
                 AND post_name like concat('%', #{postName}, '%')
             </if>

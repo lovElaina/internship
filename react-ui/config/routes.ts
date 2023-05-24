@@ -30,7 +30,27 @@
       },
     ],
   },
-
+  {
+    path: '/station',
+    name: 'station',
+    icon: 'station',
+    component: '@/layouts/TabsLayout',
+    routes: [
+      {
+        path: '/station',
+        redirect: '/station/index',
+      },
+      {
+        name: 'index',
+        icon: 'smile',
+        path: '/station/index',
+        component: './station/index',
+        wrappers: ['@/components/KeepAlive'],
+        KeepAlive: true,
+        title: '岗位信息'
+      },
+    ]
+  },
   {
     path: '/affairs',
     name: 'affairs',

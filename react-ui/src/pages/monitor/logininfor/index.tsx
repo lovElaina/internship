@@ -220,17 +220,17 @@ const LogininforTableList: React.FC = () => {
               <PlusOutlined />
               <FormattedMessage id="pages.searchTable.clear" defaultMessage="清空" />
             </Button>,
-            <Button
-              type="primary"
-              key="export"
-              hidden={!access.hasPerms('monitor:logininfor:export')}
-              onClick={async () => {
-                handleExport();
-              }}
-            >
-              <PlusOutlined />
-              <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
-            </Button>,
+            // <Button
+            //   type="primary"
+            //   key="export"
+            //   hidden={!access.hasPerms('monitor:logininfor:export')}
+            //   onClick={async () => {
+            //     handleExport();
+            //   }}
+            // >
+            //   <PlusOutlined />
+            //   <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
+            // </Button>,
           ]}
           request={(params) =>
             getLogininforList({ ...params } as LogininforListParams).then((res) => {

@@ -7,6 +7,7 @@ import com.ruoyi.common.core.domain.entity.User;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.mapper.CompanyMapper;
+import com.ruoyi.system.mapper.StudentMapper;
 import com.ruoyi.system.mapper.UserMapper;
 import com.ruoyi.system.service.ISysCompanyService;
 import com.ruoyi.system.service.ISysUserService;
@@ -34,6 +35,9 @@ public class SysCompanyServiceImpl implements ISysCompanyService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private StudentMapper studentMapper;
 
     @Autowired
     private ISysUserService userService;
@@ -153,4 +157,11 @@ public class SysCompanyServiceImpl implements ISysCompanyService {
         int j = companyMapper.deleteCompanyById(companyId);
         return i + j;
     }
+
+    @Override
+    @Transactional
+    public List<Long> selectStudentListByCompanyId(Long companyId) {
+        return studentMapper.selectStudentListByCompanyId(companyId);
+    }
+
 }

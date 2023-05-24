@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ApplyMapper">
+
+    <resultMap type="Apply" id="ApplyResult">
+        <result property="applyId"       column="apply_id"       />
+        <result property="stuId"    column="stu_id"    />
+        <result property="applyType"     column="apply_type"     />
+        <result property="applyDetail"  column="apply_detail"  />
+        <result property="applyRole"  column="apply_role"  />
+        <result property="applyStatus"  column="apply_status"  />
+        <result property="refuseDetail"  column="refuse_detail"  />
+        <result property="startTime"  column="start_time"  />
+        <result property="endTime"  column="end_time"  />
+        <result property="applyTime"         column="apply_time"          />
+        <result property="postId"       column="post_id"       />
+        <result property="delFlag"     column="del_flag"     />
+    </resultMap>
+
+
+
+    <select id="selectApplyById" parameterType="Long" resultMap="ApplyResult">
+        select * from apply where apply_id = #{applyId} AND del_flag = '0'
+    </select>
+
+    <select id="selectApplyList" parameterType="Apply" resultMap="ApplyResult">
+        select * from apply where del_flag = '0'
+    </select>
+
+
+    <!--    以后做学生角色的时候会使用到-->
+
+
+        <insert id="insertApply" parameterType="Apply">
+            insert into apply (
+            <if test="applyId != null and applyId != 0 ">apply_id, </if>
+            <if test="stuId != null and stuId != 0 ">stu_id, </if>
+            <if test="applyType != null and applyType != '' ">apply_type, </if>
+            <if test="applyDetail != null and applyDetail != '' ">apply_detail, </if>
+            <if test="applyRole != null and applyRole != ''">apply_role,</if>
+            <if test="applyStatus != null and applyStatus != ''">apply_status,</if>
+            <if test="refuseDetail != null and refuseDetail != ''">refuse_detail,</if>
+            <if test="startTime != null and startTime != ''">start_time,</if>
+            <if test="endTime != null and endTime != ''">end_time,</if>
+            <if test="applyTime != null and applyTime != ''">apply_time,</if>
+            <if test="postId != null and postId != ''">post_id,</if>
+            del_flag
+            )values(
+            <if test="applyId != null and applyId != 0 ">#{applyId}, </if>
+            <if test="stuId != null and stuId != 0 ">#{stuId}, </if>
+            <if test="applyType != null and applyType != '' ">#{applyType}, </if>
+            <if test="applyDetail != null and applyDetail != '' ">#{applyDetail}, </if>
+            <if test="applyRole != null and applyRole != ''">#{applyRole},</if>
+            <if test="applyStatus != null and applyStatus != ''">#{applyStatus},</if>
+            <if test="refuseDetail != null and refuseDetail != ''">#{refuseDetail},</if>
+            <if test="startTime != null and startTime != ''">#{startTime},</if>
+            <if test="endTime != null and endTime != ''">#{endTime},</if>
+            <if test="applyTime != null and applyTime != ''">#{applyTime},</if>
+            <if test="postId != null and postId != ''">#{postId},</if>
+            '0'
+            )
+        </insert>
+
+    <update id="updateApply" parameterType="SysApply">
+        update apply
+        <set>
+            <if test="applyId != null and applyId != 0 ">apply_id = #{applyId}, </if>
+            <if test="stuId != null and stuId != 0 ">stu_id = #{stuId}, </if>
+            <if test="applyType != null and applyType != '' ">apply_type = #{applyType}, </if>
+            <if test="applyDetail != null and applyDetail != '' ">apply_detail = #{applyDetail}, </if>
+            <if test="applyRole != null and applyRole != ''">apply_role = #{applyRole},</if>
+            <if test="applyStatus != null and applyStatus != ''">apply_status = #{applyStatus},</if>
+            <if test="refuseDetail != null and refuseDetail != ''">refuse_detail = #{refuseDetail},</if>
+            <if test="startTime != null and startTime != ''">start_time = #{startTime},</if>
+            <if test="endTime != null and endTime != ''">end_time = #{endTime},</if>
+            <if test="applyTime != null and applyTime != ''">apply_time = #{applyTime},</if>
+            <if test="postId != null and postId != ''">post_id = #{postId},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </set>
+        where apply_id = #{applyId}
+    </update>
+
+    <delete id="deleteApplyById" parameterType="Long">
+        delete from apply where apply_id = #{applyId}
+    </delete>
+
+
+</mapper>

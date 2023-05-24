@@ -295,17 +295,17 @@ const TutorTableList: React.FC = () => {
               <DeleteOutlined />
               删除
             </Button>,
-            <Button
-              type="primary"
-              key="export"
-              hidden={!access.hasPerms('system:user:export')}
-              onClick={async () => {
-                handleExport();
-              }}
-            >
-              <PlusOutlined />
-              导出
-            </Button>,
+            // <Button
+            //   type="primary"
+            //   key="export"
+            //   hidden={!access.hasPerms('system:user:export')}
+            //   onClick={async () => {
+            //     handleExport();
+            //   }}
+            // >
+            //   <PlusOutlined />
+            //   导出
+            // </Button>,
           ]}
           ///////////////////////////////////////////////////////////////////////////////
 

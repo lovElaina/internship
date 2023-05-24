@@ -10,7 +10,6 @@ import ProTable from '@ant-design/pro-table';
 //import type { PostType, PostListParams } from './data.d';
 import {getPostList, removePost, addPost, updatePost, queryCurrentUserInfo, getCompanyByUserId} from './service';
 import UpdateForm from './components/edit';
-import { getDict } from '../../system/dict/service'
 import {getUserInfo} from "@/services/session";
 import {useRequest} from "@@/plugin-request/request";
 
@@ -222,7 +221,6 @@ const PostTableList = () => {
           type="link"
           size="small"
           key="edit1"
-          hidden={!access.hasPerms('system:post:query')}
           onClick={() => {
             setIsQueryMode(true);
             setModalVisible(true);
@@ -237,7 +235,7 @@ const PostTableList = () => {
           type="link"
           size="small"
           key="edit2"
-          hidden={!access.hasPerms('system:post:edit')||currentUserInfo?.data === null}
+          hidden
           onClick={() => {
             setModalVisible(true);
             setCurrentRow(record);

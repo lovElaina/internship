@@ -207,31 +207,37 @@ const PostTableList = () => {
       title: "应交日报",
       dataIndex: 'planDay',
       valueType: 'text',
+      hideInSearch: true
     },
     {
       title: "实交日报",
       dataIndex: 'actualDay',
       valueType: 'text',
+      hideInSearch: true
     },
     {
       title: "应交周报",
       dataIndex: 'planWeek',
       valueType: 'text',
+      hideInSearch: true
     },
     {
       title: "实交周报",
       dataIndex: 'actualWeek',
       valueType: 'text',
+      hideInSearch: true
     },
     {
       title: "应交月报",
       dataIndex: 'planMonth',
       valueType: 'text',
+      hideInSearch: true
     },
     {
       title: "实交月报",
       dataIndex: 'actualMonth',
       valueType: 'text',
+      hideInSearch: true
     },
 
 
@@ -303,17 +309,17 @@ const PostTableList = () => {
 
 
           toolBarRender={() => [
-            <Button
-              type="primary"
-              key="add"
-              hidden={!access.hasPerms('system:post:add')}
-              onClick={async () => {
-                setCurrentRow(undefined);
-                setModalVisible(true);
-              }}
-            >
-              <PlusOutlined /> 新建
-            </Button>,
+            // <Button
+            //   type="primary"
+            //   key="add"
+            //   hidden={!access.hasPerms('system:post:add')}
+            //   onClick={async () => {
+            //     setCurrentRow(undefined);
+            //     setModalVisible(true);
+            //   }}
+            // >
+            //   <PlusOutlined /> 新建
+            // </Button>,
             <Button
               type="primary"
               key="remove"
@@ -329,17 +335,17 @@ const PostTableList = () => {
               <DeleteOutlined />
               删除
             </Button>,
-            <Button
-              type="primary"
-              key="export"
-              hidden={!access.hasPerms('system:post:export')}
-              onClick={async () => {
-                await handleExport();
-              }}
-            >
-              <PlusOutlined />
-              导出
-            </Button>,
+            // <Button
+            //   type="primary"
+            //   key="export"
+            //   hidden={!access.hasPerms('system:post:export')}
+            //   onClick={async () => {
+            //     await handleExport();
+            //   }}
+            // >
+            //   <PlusOutlined />
+            //   导出
+            // </Button>,
           ]}
 
 

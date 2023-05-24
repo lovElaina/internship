@@ -192,6 +192,7 @@ const TutorTableList: React.FC = () => {
       title: '院系',
       dataIndex: ['extra','dept','deptName'],
       valueType: 'text',
+      hideInSearch: true,
       width:'150px'
     },
     {
@@ -372,17 +373,17 @@ const TutorTableList: React.FC = () => {
               <DeleteOutlined />
               删除
             </Button>,
-            <Button
-              type="primary"
-              key="export"
-              hidden={!access.hasPerms('system:tutor:export')}
-              onClick={async () => {
-                handleExport();
-              }}
-            >
-              <PlusOutlined />
-              导出
-            </Button>,
+            // <Button
+            //   type="primary"
+            //   key="export"
+            //   hidden={!access.hasPerms('system:tutor:export')}
+            //   onClick={async () => {
+            //     handleExport();
+            //   }}
+            // >
+            //   <PlusOutlined />
+            //   导出
+            // </Button>,
           ]}
           ///////////////////////////////////////////////////////////////////////////////
 

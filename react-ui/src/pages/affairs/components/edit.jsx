@@ -6,10 +6,35 @@ import {
   ProFormSelect,
   ProFormTreeSelect, ProForm, ProFormDependency
 } from '@ant-design/pro-form';
-import { Form, Modal, Row, Col } from 'antd';
+import {Form, Modal, Row, Col, message} from 'antd';
 import { useIntl, FormattedMessage } from 'umi';
 import {ProFormDateRangePicker} from "@ant-design/pro-components";
 import dayjs from "dayjs";
+
+import {addApply} from "@/pages/affairs/service";
+
+/**
+ * 添加申请
+ *
+ * @param fields
+ */
+const handleAdd = async (fields) => {
+  const hide = message.loading('正在添加');
+  try {
+    const resp = await addApply({ ...fields });
+    hide();
+    if (resp.code === 200) {
+      message.success('添加成功');
+    } else {
+      message.error(resp.msg);
+    }
+    return true;
+  } catch (error) {
+    hide();
+    message.error('添加失败请重试！');
+    return false;
+  }
+};
 
 
 const ApplyForm = (props) => {
@@ -19,6 +44,8 @@ const ApplyForm = (props) => {
 
   const [userId, setUserId] = useState('');
 
+  const {posts,stuInfo,actionRef} = props;
+
   //const { depts } = props;
   //const { sexOptions, statusOptions, internshipStatusOptions } = props;
 
@@ -26,6 +53,7 @@ const ApplyForm = (props) => {
   //   form.resetFields();
   //   //setUserId(props.values.userId);
   // }, [form, props]);
+
 
 
   const intl = useIntl();
@@ -48,7 +76,21 @@ const ApplyForm = (props) => {
   };
 
   return (
-      <ProForm formRef={formRef}  form={form} onFinish={async (values) =>{
+      <ProForm formRef={formRef}  form={form}
+               onFinish={async (values) =>{
+        let success = false;
+        values.startTime = Date.parse(values.dateRange[0]);
+        values.endTime = Date.parse(values.dateRange[1]);
+        values.applyTime = Date.now();
+        values.stuId = stuInfo.resId;
+        values.applyRole = "0"
+        values.applyStatus = "0"
+        success = await handleAdd(values);
+        if (success) {
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        }
         console.log(values)
       }} >
 
@@ -59,7 +101,7 @@ const ApplyForm = (props) => {
               options={[
                 {
                   value: 0,
-                  label: '申请实习',
+                  label: '开始实习',
                 },
                 {
                   value: 1,
@@ -75,7 +117,11 @@ const ApplyForm = (props) => {
                 },
                 {
                   value: 4,
-                  label: '延迟实习时间',
+                  label: '延长实习时间',
+                },
+                {
+                  value: 5,
+                  label: '成绩复核',
                 }
               ]}
 
@@ -107,34 +153,13 @@ const ApplyForm = (props) => {
             if(applyType === 0 || applyType === 1){
               return (
                 <ProFormSelect
-                  name="job"
+                  name="postId"
                   mode="single"
-                  options={[
-                    {
-                      value: 0,
-                      label: '百度',
-                    },
-                    {
-                      value: 1,
-                      label: '京东',
-                    },
-                    {
-                      value: 2,
-                      label: '阿里',
-                    },
-                    {
-                      value: 3,
-                      label: '美团',
-                    },
-                    {
-                      value: 4,
-                      label: '其他',
-                    }
-                  ]}
+                  options={posts}
                   width="xl"
                   label="实习岗位"
                   placeholder="请选择实习岗位"
-                  rules={[{ required: true, message: '请选择类型' }]}
+                  rules={[{ required: true, message: '请选择实习岗位' }]}
                 />
               )
             }

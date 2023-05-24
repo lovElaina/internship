@@ -156,9 +156,16 @@ const PostTableList = () => {
     },
 
     {
-      title: '成绩',
+      title: '导师评分',
       dataIndex: 'tutorGrade',
       valueType: 'text',
+      width: '100px'
+    },
+    {
+      title: '企业评分',
+      dataIndex: 'companyGrade',
+      valueType: 'text',
+      width: '100px'
     },
 
     {
@@ -215,66 +222,12 @@ const PostTableList = () => {
 
   return (
     <WrapContent>
-      {/*{*/}
-      {/*  (stuInfo && logList) ? <Row gutter={16}>*/}
-
-      {/*    <Col span={3}>*/}
-      {/*      <Card title="应交日报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>*/}
-      {/*        Card content*/}
-      {/*      </Card>*/}
-      {/*    </Col>*/}
-      {/*    <Col span={3}>*/}
-      {/*      <Card title="实交日报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>*/}
-      {/*        Card content*/}
-      {/*      </Card>*/}
-      {/*    </Col>*/}
-
-      {/*    <Col span={3}>*/}
-      {/*      <Card title="应交周报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>*/}
-      {/*        Card content*/}
-      {/*      </Card>*/}
-      {/*    </Col>*/}
-
-      {/*    <Col span={3}>*/}
-      {/*      <Card title="实交周报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>*/}
-      {/*        Card content*/}
-      {/*      </Card>*/}
-      {/*    </Col>*/}
-
-      {/*    <Col span={3}>*/}
-      {/*      <Card title="应交月报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>*/}
-      {/*        Card content*/}
-      {/*      </Card>*/}
-      {/*    </Col>*/}
-
-      {/*    <Col span={3}>*/}
-      {/*      <Card title="实交月报" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>*/}
-      {/*        Card content*/}
-      {/*      </Card>*/}
-      {/*    </Col>*/}
-
-      {/*    <Col span={3}>*/}
-      {/*      <Card title="提交率" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>*/}
-      {/*        Card content*/}
-      {/*      </Card>*/}
-      {/*    </Col>*/}
-
-      {/*    <Col span={3}>*/}
-      {/*      <Card title="平均分" bordered={false} headStyle={{textAlign:"center"}} style={{textAlign:"center"}}>*/}
-      {/*        Card content*/}
-      {/*      </Card>*/}
-      {/*    </Col>*/}
-
-      {/*  </Row> : <div/>*/}
-      {/*}*/}
 
 
 
+      <div style={{width: '100%', float: 'right'}}>
 
-
-      <div style={{width: '100%', float: 'right', marginTop: "24px"}}>
-
-        {stuInfo ?
+        {stuInfo && stuInfo.stuInfo.internshipStatus!=="0" ?
 
           <ProTable
             headerTitle="提交报告"
@@ -299,7 +252,9 @@ const PostTableList = () => {
             columns={columns}
           />
 
-          : <div>loading...</div>}
+          : <Col span={8}>
+            <Card title="提示信息"><div>当前无进行中的实习，请在事务申请中提交实习申请</div></Card>
+          </Col>}
 
       </div>
 

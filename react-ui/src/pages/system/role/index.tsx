@@ -319,7 +319,7 @@ const RoleTableList: React.FC = () => {
               <DeleteOutlined />
               <FormattedMessage id="pages.searchTable.delete" defaultMessage="删除" />
             </Button>,
-            <Button
+/*            <Button
               type="primary"
               key="export"
               hidden={!access.hasPerms('system:role:export')}
@@ -329,7 +329,7 @@ const RoleTableList: React.FC = () => {
             >
               <PlusOutlined />
               <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
-            </Button>,
+            </Button>,*/
           ]}
           request={(params) =>
             getRoleList({ ...params } as RoleListParams).then((res) => {

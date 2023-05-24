@@ -39,6 +39,7 @@ public interface ISysAttendService {
     //返回某学生的缺勤天数
     public int countAbsentByStuId(Long stuId);
 
+    //初始化学生考勤数据
     public int initAttendByStuId(Long stuId);
 
     public int updateAttend(Attend attend);

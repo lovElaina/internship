@@ -61,7 +61,7 @@ const UserForm: React.FC<UserFormProps> = (props) => {
       stuGender: props.values.stuGender,
       tutorId:props.values.tutorId ? props.values.tutorId+"" : null,
       remark: props.values.remark,
-      dateRange:props.values.startTime ? [props.values.startTime-0, props.values.endTime-0]:[Date.now(), Date.now()],
+      dateRange:props.values.startTime ? [props.values.startTime-0, props.values.endTime-0]:[null, null],
 
 
 

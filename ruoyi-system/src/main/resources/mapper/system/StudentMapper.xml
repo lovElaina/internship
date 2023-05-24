@@ -37,6 +37,13 @@
         select * from student where del_flag = '0' and user_id = #{userId}
     </select>
 
+    <select id="selectStudentListByCompanyId" parameterType="Long" resultMap="StudentResult">
+        select stu_id from student s
+        left join post p on s.post_id = p.post_id
+        left join company c on p.company_id = c.company_id
+        where s.del_flag = '0' and c.company_id = #{companyId}
+    </select>
+
     <select id="countStudentPostById" resultType="Integer">
         select count(1) from student where post_id=#{postId}
     </select>

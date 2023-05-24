@@ -169,12 +169,12 @@ const PostTableList = () => {
   const columns = [
     {
       title: "申请人",
-      dataIndex: 'studentName',
+      dataIndex: ['extra','stuname'],
       valueType: 'text',
     },
     {
       title: "学号",
-      dataIndex: 'studentId',
+      dataIndex: ['extra','stunumber'],
       valueType: 'text',
     },
     {
@@ -193,7 +193,12 @@ const PostTableList = () => {
       valueEnum: applyTypeOptions,
     },
     {
-      title: "详情",
+      title: "所在岗位",
+      dataIndex: ['extra','post'],
+      valueType: 'text',
+    },
+    {
+      title: "申请理由",
       dataIndex: 'applyDetail',
       valueType: 'text',
     },
@@ -218,13 +223,13 @@ const PostTableList = () => {
 
     {
       title: "状态",
-      dataIndex: 'status',
+      dataIndex: 'applyStatus',
       valueType: 'select',
       valueEnum: respTypeOptions,
     },
 
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      title: "操作",
       dataIndex: 'option',
       width: '220px',
       valueType: 'option',
@@ -246,7 +251,7 @@ const PostTableList = () => {
           type="link"
           size="small"
           key="batchRemove"
-          hidden={record.status!==0}
+          hidden={record.applyStatus!=="0"}
           onClick={async () => {
             console.log(record)
             Modal.confirm({
@@ -255,7 +260,7 @@ const PostTableList = () => {
               okText: '确认',
               cancelText: '取消',
               onOk: async () => {
-                const success = await handleUpdate({...record,status:1});
+                const success = await handleUpdate({...record,applyStatus:2});
                 if (success) {
                   if (actionRef.current) {
                     actionRef.current.reload();
@@ -272,8 +277,9 @@ const PostTableList = () => {
         <Button
           type="link"
           size="small"
-          key="batchRemove"
-          hidden={record.status!==0}
+          key="refuse"
+          danger
+          hidden={record.applyStatus!=="0"}
           onClick={async () => {
             Modal.confirm({
               title: '操作确认',
@@ -281,7 +287,7 @@ const PostTableList = () => {
               okText: '确认',
               cancelText: '取消',
               onOk: async () => {
-                const success = await handleUpdate({...record,status:2});
+                const success = await handleUpdate({...record,applyStatus:1});
                 if (success) {
                   if (actionRef.current) {
                     actionRef.current.reload();
@@ -296,31 +302,32 @@ const PostTableList = () => {
 
 
 
-        <Button
-          type="link"
-          size="small"
-          danger
-          key="batchRemove"
-          hidden={!access.hasPerms('system:post:remove')}
-          onClick={async () => {
-            Modal.confirm({
-              title: '删除',
-              content: '确定删除该项吗？',
-              okText: '确认',
-              cancelText: '取消',
-              onOk: async () => {
-                const success = await handleRemoveOne(record);
-                if (success) {
-                  if (actionRef.current) {
-                    actionRef.current.reload();
-                  }
-                }
-              },
-            });
-          }}
-        >
-          删除
-        </Button>,
+        // <Button
+        //   type="link"
+        //   size="small"
+        //   danger
+        //   key="batchRemove"
+        //   hidden={!access.hasPerms('system:post:remove')}
+        //   onClick={async () => {
+        //     console.log(record)
+        //     Modal.confirm({
+        //       title: '删除',
+        //       content: '确定删除该项吗？',
+        //       okText: '确认',
+        //       cancelText: '取消',
+        //       onOk: async () => {
+        //         const success = await handleRemoveOne(record);
+        //         if (success) {
+        //           if (actionRef.current) {
+        //             actionRef.current.reload();
+        //           }
+        //         }
+        //       },
+        //     });
+        //   }}
+        // >
+        //   删除
+        // </Button>,
       ],
     },
   ];
@@ -353,17 +360,7 @@ const PostTableList = () => {
               <DeleteOutlined />
               删除
             </Button>,
-            <Button
-              type="primary"
-              key="export"
-              hidden={!access.hasPerms('system:post:export')}
-              onClick={async () => {
-                handleExport();
-              }}
-            >
-              <PlusOutlined />
-              导出
-            </Button>,
+
           ]}
           request={() =>
             getApplyList().then((res) => {

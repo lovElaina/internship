@@ -30,6 +30,15 @@ public interface StudentMapper {
      */
     public Student selectStudentByStuId(Long stuId);
 
+
+    /**
+     * 根据企业ID查询其负责的学生ID集合
+     *
+     * @param companyId 企业ID
+     * @return 学生信息
+     */
+    public List<Long> selectStudentListByCompanyId(Long companyId);
+
     /**
      * 根据用户ID查询学生信息
      *

@@ -365,17 +365,17 @@ const OperlogTableList: React.FC = () => {
               <PlusOutlined />
               <FormattedMessage id="pages.searchTable.clear" defaultMessage="清空" />
             </Button>,
-            <Button
-              type="primary"
-              key="export"
-              hidden={!access.hasPerms('monitor:operlog:export')}
-              onClick={async () => {
-                handleExport();
-              }}
-            >
-              <PlusOutlined />
-              <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
-            </Button>,
+            // <Button
+            //   type="primary"
+            //   key="export"
+            //   hidden={!access.hasPerms('monitor:operlog:export')}
+            //   onClick={async () => {
+            //     handleExport();
+            //   }}
+            // >
+            //   <PlusOutlined />
+            //   <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
+            // </Button>,
           ]}
           request={(params) =>
             getOperlogList({ ...params } as OperlogListParams).then((res) => {

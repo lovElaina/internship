@@ -50,7 +50,6 @@ public class SysScoreServiceImpl implements ISysScoreService {
         Score scoreByStuId = scoreMapper.selectScoreByStuId(score.getStuId());
         scoreByStuId.setActionCompanyScore(score.getActionCompanyScore());
         scoreByStuId.setAttendScore(score.getAttendScore());
-
         scoreByStuId.setTotalScore((scoreByStuId.getReportCompanyScore()!=null? scoreByStuId.getReportCompanyScore()*0.2f : 0) + (scoreByStuId.getReportTutorScore()!=null? scoreByStuId.getReportTutorScore()*0.2f : 0) + (score.getActionCompanyScore()!=null?score.getActionCompanyScore()*0.3f:0) + (score.getAttendScore()!=null?score.getAttendScore()*0.3f:0));
         return scoreMapper.updateScore(scoreByStuId);
     }

@@ -265,32 +265,33 @@ const PostTableList = () => {
         >
           查看详情
         </Button>,
+        //
+        // <Button
+        //   type="link"
+        //   size="small"
+        //   danger
+        //   key="batchRemove"
+        //   onClick={async () => {
+        //     Modal.confirm({
+        //       title: '初始化',
+        //       content: '确定初始化该项吗？',
+        //       okText: '确认',
+        //       cancelText: '取消',
+        //       onOk: async () => {
+        //         console.log(record)
+        //         const success = await handleInit(record);
+        //         if (success) {
+        //           if (actionRef.current) {
+        //             actionRef.current.reload();
+        //           }
+        //         }
+        //       },
+        //     });
+        //   }}
+        // >
+        //   删除
+        // </Button>,
 
-        <Button
-          type="link"
-          size="small"
-          danger
-          key="batchRemove"
-          onClick={async () => {
-            Modal.confirm({
-              title: '初始化',
-              content: '确定初始化该项吗？',
-              okText: '确认',
-              cancelText: '取消',
-              onOk: async () => {
-                console.log(record)
-                const success = await handleInit(record);
-                if (success) {
-                  if (actionRef.current) {
-                    actionRef.current.reload();
-                  }
-                }
-              },
-            });
-          }}
-        >
-          删除
-        </Button>,
         // <Button
         //   type="link"
         //   size="small"
@@ -333,17 +334,17 @@ const PostTableList = () => {
             labelWidth: 120,
           }}
           toolBarRender={() => [
-            <Button
-              type="primary"
-              key="add"
-              hidden={!access.hasPerms('system:post:add')}
-              onClick={async () => {
-                setCurrentRow(undefined);
-                setModalVisible(true);
-              }}
-            >
-              <PlusOutlined /> 新建
-            </Button>,
+            // <Button
+            //   type="primary"
+            //   key="add"
+            //   hidden={!access.hasPerms('system:post:add')}
+            //   onClick={async () => {
+            //     setCurrentRow(undefined);
+            //     setModalVisible(true);
+            //   }}
+            // >
+            //   <PlusOutlined /> 新建
+            // </Button>,
             <Button
               type="primary"
               key="remove"
@@ -359,17 +360,17 @@ const PostTableList = () => {
               <DeleteOutlined />
               删除
             </Button>,
-            <Button
-              type="primary"
-              key="export"
-              hidden={!access.hasPerms('system:post:export')}
-              onClick={async () => {
-                handleExport();
-              }}
-            >
-              <PlusOutlined />
-              导出
-            </Button>,
+            // <Button
+            //   type="primary"
+            //   key="export"
+            //   hidden={!access.hasPerms('system:post:export')}
+            //   onClick={async () => {
+            //     handleExport();
+            //   }}
+            // >
+            //   <PlusOutlined />
+            //   导出
+            // </Button>,
           ]}
           request={(params) =>
             getAttendList(params).then((res) => {

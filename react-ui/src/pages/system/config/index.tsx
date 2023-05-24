@@ -281,17 +281,17 @@ const ConfigTableList: React.FC = () => {
               <DeleteOutlined />
               <FormattedMessage id="pages.searchTable.delete" defaultMessage="删除" />
             </Button>,
-            <Button
-              type="primary"
-              key="export"
-              hidden={!access.hasPerms('system:config:export')}
-              onClick={async () => {
-                handleExport();
-              }}
-            >
-              <PlusOutlined />
-              <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
-            </Button>,
+            // <Button
+            //   type="primary"
+            //   key="export"
+            //   hidden={!access.hasPerms('system:config:export')}
+            //   onClick={async () => {
+            //     handleExport();
+            //   }}
+            // >
+            //   <PlusOutlined />
+            //   <FormattedMessage id="pages.searchTable.export" defaultMessage="导出" />
+            // </Button>,
           ]}
           request={(params) =>
             getConfigList({ ...params } as ConfigListParams).then((res) => {
