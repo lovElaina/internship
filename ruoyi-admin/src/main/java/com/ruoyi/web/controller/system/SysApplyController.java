@@ -2,14 +2,11 @@ package com.ruoyi.web.controller.system;
 
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.Student;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.system.domain.Apply;
-import com.ruoyi.system.domain.SysApply;
 
 
 import com.ruoyi.system.service.IApplyService;
-import com.ruoyi.system.service.ISysApplyService;
 import com.ruoyi.system.service.ISysStudentService;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
