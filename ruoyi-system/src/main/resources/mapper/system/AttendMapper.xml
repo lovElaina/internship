@@ -36,7 +36,9 @@
 
 
     <select id="selectAttendListByStuId" parameterType="Long" resultMap="AttendResult">
-        select * from attend where stu_id = #{stuId} AND result != '4' AND attend_date &lt; unix_timestamp()*1000 order by attend_date desc
+        select * from attend where stu_id = #{stuId}
+        AND attend_date &lt; unix_timestamp()*1000
+        order by attend_date desc
     </select>
 
 

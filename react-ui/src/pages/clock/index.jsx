@@ -200,7 +200,6 @@ const PostTableList = () => {
 
           <Col span={6}>
             <Button type="primary"
-              // disabled={(logList ? isTodayAlready(logList) : true) ||(logList ? isWeekendOrRest(logList) : true) || new Date().getHours() < 6 || stuInfo.stuInfo?.internshipStatus !== "1"}
                     disabled={(!logList)||isWrongStatus()||isWrongTime()||isWeekend(logList)||isLeaveOrAbsent(logList)||isAlreadySign(logList)}
                     onClick={signOn} block icon={<FormOutlined/>} style={{height: "100%", fontSize: "24px"}}>上班打卡</Button>
           </Col>

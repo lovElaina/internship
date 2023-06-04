@@ -261,31 +261,31 @@ const PostTableList = () => {
           批阅报告
         </Button>,
 
-        <Button
-          type="link"
-          size="small"
-          danger
-          key="batchRemove"
-          onClick={async () => {
-            Modal.confirm({
-              title: '初始化',
-              content: '确定初始化该项吗？',
-              okText: '确认',
-              cancelText: '取消',
-              onOk: async () => {
-                console.log(record)
-                const success = await handleInit(record);
-                if (success) {
-                  if (actionRef.current) {
-                    actionRef.current.reload();
-                  }
-                }
-              },
-            });
-          }}
-        >
-          删除
-        </Button>,
+        // <Button
+        //   type="link"
+        //   size="small"
+        //   danger
+        //   key="batchRemove"
+        //   onClick={async () => {
+        //     Modal.confirm({
+        //       title: '初始化',
+        //       content: '确定初始化该项吗？',
+        //       okText: '确认',
+        //       cancelText: '取消',
+        //       onOk: async () => {
+        //         console.log(record)
+        //         const success = await handleInit(record);
+        //         if (success) {
+        //           if (actionRef.current) {
+        //             actionRef.current.reload();
+        //           }
+        //         }
+        //       },
+        //     });
+        //   }}
+        // >
+        //   删除
+        // </Button>,
       ],
     },
   ];

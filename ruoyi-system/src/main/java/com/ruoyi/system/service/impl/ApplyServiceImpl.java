@@ -65,7 +65,7 @@ public class ApplyServiceImpl implements IApplyService {
     @Override
     @Transactional
     public int updateApply(Apply apply) {
-        //开始实习
+        //若申请类型为“0”，即为开始实习申请，则走下面的代码
         if(Objects.equals(apply.getApplyType(), "0")){
             //开始实习-企业
             if(apply.getApplyRole()=="0"){
@@ -74,7 +74,8 @@ public class ApplyServiceImpl implements IApplyService {
                     apply.setApplyStatus("0");
                     apply.setApplyRole("1");
                 }
-                //开始实习-企业-申请拒绝
+                //拒绝申请不需要写代码，因为最后会执行updateApply方法，
+                //申请拒绝时，status为1，表示拒绝，且包含refuseDetail
             }
 
             //开始实习-导师
@@ -84,7 +85,7 @@ public class ApplyServiceImpl implements IApplyService {
                     apply.setApplyStatus("0");
                     apply.setApplyRole("2");
                 }
-                //开始实习-企业-申请拒绝
+                //开始实习-导师-申请拒绝
             }
 
             //开始实习-教务

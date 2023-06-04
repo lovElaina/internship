@@ -5,7 +5,7 @@
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
-    "build": "umi build",
+    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && umi build",
     "deploy": "npm run build && npm run gh-pages",
     "dev": "SET NODE_OPTIONS=--openssl-legacy-provider && npm run start:dev",
     "docker-hub:build": "docker build  -f Dockerfile.hub -t  ant-design-pro ./",

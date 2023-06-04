@@ -129,22 +129,22 @@ const Login: React.FC = () => {
             await handleSubmit(values as API.LoginParams);
           }}
         >
-          <Tabs activeKey={type} onChange={setType}>
-            <Tabs.TabPane
-              key="account"
-              tab={intl.formatMessage({
-                id: 'pages.login.accountLogin.tab',
-                defaultMessage: '账户密码登录',
-              })}
-            />
-            <Tabs.TabPane
-              key="mobile"
-              tab={intl.formatMessage({
-                id: 'pages.login.phoneLogin.tab',
-                defaultMessage: '手机号登录',
-              })}
-            />
-          </Tabs>
+          {/*<Tabs activeKey={type} onChange={setType}>*/}
+          {/*  <Tabs.TabPane*/}
+          {/*    key="account"*/}
+          {/*    tab={intl.formatMessage({*/}
+          {/*      id: 'pages.login.accountLogin.tab',*/}
+          {/*      defaultMessage: '账户密码登录',*/}
+          {/*    })}*/}
+          {/*  />*/}
+          {/*  <Tabs.TabPane*/}
+          {/*    key="mobile"*/}
+          {/*    tab={intl.formatMessage({*/}
+          {/*      id: 'pages.login.phoneLogin.tab',*/}
+          {/*      defaultMessage: '手机号登录',*/}
+          {/*    })}*/}
+          {/*  />*/}
+          {/*</Tabs>*/}
 
           {status === 'error' && loginType === 'account' && (
             <LoginMessage content={massage} />

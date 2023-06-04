@@ -137,7 +137,7 @@ const PostForm = (props) => {
               },
             });
           }}
-          hidden={record.result === "2"}
+          hidden={record.result === "3"}
         >
           设为缺勤
         </Button>,
@@ -187,7 +187,7 @@ const PostForm = (props) => {
               },
             });
           }}
-          hidden={record.result === "3"}
+          hidden={record.result === "2"}
         >
           设为迟到
         </Button>,
@@ -277,9 +277,9 @@ const PostForm = (props) => {
 
 
           actions: [
-            <Button key="primary" type="primary">
-              导出
-            </Button>,
+            // <Button key="primary" type="primary">
+            //   导出
+            // </Button>,
           ],
         }}
         rowKey="key"

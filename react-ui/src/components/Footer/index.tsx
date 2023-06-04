@@ -6,19 +6,19 @@ export default () => {
   const intl = useIntl();
   const defaultMessage = intl.formatMessage({
     id: 'app.copyright.produced',
-    defaultMessage: 'powered by Ant Design',
+    defaultMessage: 'powered by myself',
   });
 
   const currentYear = new Date().getFullYear();
 
   return (
     <DefaultFooter
-      copyright={`${currentYear} ${defaultMessage}`}
+      copyright={false}
       links={[
         {
           key: 'Aemon',
-          title: 'Aemon\'s world',
-          href: 'https://aemon.cn',
+          title: 'Peking University',
+          //href: 'https://aemon.cn',
           blankTarget: true,
         },
         {
@@ -30,7 +30,7 @@ export default () => {
         {
           key: 'Zhang Yichen',
           title: 'Zhang Yichen',
-          href: 'https://aemon.cn',
+          //href: 'https://aemon.cn',
           blankTarget: true,
         },
       ]}
